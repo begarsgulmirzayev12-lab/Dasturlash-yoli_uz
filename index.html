@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dasturchi Yo'li — Dasturlashni o'zbek tilida o'rganing</title>
+<meta name="description" content="Dasturchi Yo'li — bepul, o'zbek tilidagi dasturlash darsliklari: Python, JavaScript, Git, ma'lumotlar bazalari va boshqalar. Noldan boshlab, amaliyot orqali o'rganing.">
+<meta name="keywords" content="dasturlash, python, javascript, git, dasturchi, kodlash, darslik, o'zbek tilida dasturlash">
+<meta property="og:title" content="Dasturchi Yo'li — Dasturlashni o'zbek tilida o'rganing">
+<meta property="og:description" content="Bepul, sodda va amaliy dasturlash darsliklari — o'zbek tilida.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F6F4EE;
+  --paper-dim:#EDEAE1;
+  --ink:#211F1A;
+  --ink-soft:#5B584E;
+  --petrol:#0E4B4A;
+  --petrol-deep:#0A3736;
+  --mustard:#D9A62E;
+  --line:#D8D3C4;
+  --white:#FFFFFF;
+  --radius:6px;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Inter',sans-serif;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,.brand{
+  font-family:'Libre Franklin',sans-serif;
+  color:var(--ink);
+  margin:0;
+  letter-spacing:-0.01em;
+}
+code, .mono{font-family:'JetBrains Mono',monospace;}
+a{color:inherit;text-decoration:none;}
+img{max-width:100%;display:block;}
+
+.wrap{max-width:1100px;margin:0 auto;padding:0 28px;}
+
+.skip-link{position:absolute;left:-9999px;top:0;background:var(--petrol);color:var(--white);padding:10px 16px;z-index:100;}
+.skip-link:focus{left:16px;top:16px;}
+
+a:focus-visible, button:focus-visible{outline:2px solid var(--petrol);outline-offset:3px;}
+
+header{
+  border-bottom:1px solid var(--line);
+  position:sticky;top:0;background:rgba(246,244,238,0.92);backdrop-filter:blur(6px);
+  z-index:20;
+}
+.nav-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 0;
+}
+.brand{font-size:19px;font-weight:800;display:flex;align-items:center;gap:2px;}
+.brand .tag-open{color:var(--petrol);font-family:'JetBrains Mono',monospace;font-weight:500;}
+nav ul{display:flex;gap:30px;list-style:none;margin:0;padding:0;font-size:15px;font-weight:500;}
+nav a{padding:6px 0;border-bottom:2px solid transparent;transition:border-color .15s ease;}
+nav a:hover{border-color:var(--mustard);}
+.nav-toggle{display:none;background:none;border:1px solid var(--line);border-radius:var(--radius);padding:8px 10px;font-size:14px;}
+
+@media (max-width:760px){
+  nav ul{display:none;}
+  .nav-toggle{display:block;}
+  nav ul.open{
+    display:flex;flex-direction:column;position:absolute;top:64px;left:0;right:0;
+    background:var(--paper);border-bottom:1px solid var(--line);padding:16px 28px;gap:16px;
+  }
+}
+
+.hero{padding:72px 0 56px;position:relative;overflow:hidden;}
+.hero-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:48px;align-items:center;}
+@media (max-width:860px){.hero-grid{grid-template-columns:1fr;}}
+.eyebrow-line{display:flex;align-items:center;gap:10px;margin-bottom:20px;color:var(--ink-soft);font-size:14px;}
+.eyebrow-line .dot{width:7px;height:7px;border-radius:50%;background:var(--mustard);flex:none;}
+.hero h1{font-size:clamp(34px,5vw,54px);font-weight:800;line-height:1.08;max-width:620px;}
+.hero h1 .accent{color:var(--petrol);}
+.hero p.lead{margin-top:22px;font-size:18px;color:var(--ink-soft);max-width:480px;}
+.cta-row{margin-top:32px;display:flex;gap:16px;flex-wrap:wrap;}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;padding:13px 24px;border-radius:var(--radius);
+  font-weight:600;font-size:15px;transition:transform .15s ease, box-shadow .15s ease;
+}
+.btn-primary{background:var(--petrol);color:var(--white);}
+.btn-primary:hover{background:var(--petrol-deep);}
+.btn-ghost{border:1px solid var(--ink);}
+.btn-ghost:hover{background:var(--ink);color:var(--paper);}
+
+.term{
+  background:var(--ink);border-radius:10px;overflow:hidden;
+  box-shadow:0 24px 60px -20px rgba(33,31,26,0.45);
+}
+.term-bar{display:flex;gap:7px;padding:13px 16px;background:#2A2820;}
+.term-bar span{width:10px;height:10px;border-radius:50%;background:#524E42;}
+.term-body{padding:22px 22px 26px;font-family:'JetBrains Mono',monospace;font-size:13.5px;color:#E9E5D6;}
+.term-body .c1{color:#7FBFA0;}
+.term-body .c2{color:#D9A62E;}
+.term-body .c3{color:#8FA7C4;}
+.term-body .comment{color:#8A8676;}
+.caret{display:inline-block;width:8px;height:15px;background:#D9A62E;vertical-align:middle;animation:blink 1s step-end infinite;}
+@keyframes blink{50%{opacity:0;}}
+
+.section{padding:64px 0;}
+.section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:36px;border-bottom:1px solid var(--line);padding-bottom:20px;}
+.section-head h2{font-size:28px;font-weight:800;}
+.section-head p{margin:6px 0 0;color:var(--ink-soft);font-size:15px;}
+.section-num{font-family:'JetBrains Mono',monospace;color:var(--ink-soft);font-size:14px;}
+
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);}
+@media (max-width:860px){.grid{grid-template-columns:1fr 1fr;}}
+@media (max-width:560px){.grid{grid-template-columns:1fr;}}
+.card{background:var(--paper);padding:26px 24px;display:flex;flex-direction:column;min-height:210px;}
+.card .level{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--petrol);margin-bottom:14px;}
+.card h3{font-size:18px;font-weight:700;margin-bottom:10px;}
+.card p{font-size:14px;color:var(--ink-soft);flex:1;margin:0;}
+.card .go{margin-top:16px;font-size:14px;font-weight:600;color:var(--ink);border-bottom:1px solid var(--mustard);align-self:flex-start;padding-bottom:2px;}
+
+.why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:36px;}
+@media (max-width:760px){.why-grid{grid-template-columns:1fr;}}
+.why-item h3{font-size:17px;font-weight:700;margin-bottom:10px;}
+.why-item p{font-size:14.5px;color:var(--ink-soft);margin:0;}
+.why-mark{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--petrol);color:var(--petrol);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-weight:600;margin-bottom:16px;font-size:14px;}
+
+.band{background:var(--petrol);color:var(--paper);padding:56px 0;}
+.band-inner{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;}
+.band h2{color:var(--paper);font-size:26px;font-weight:800;max-width:480px;}
+.band .btn-primary{background:var(--mustard);color:var(--ink);}
+.band .btn-primary:hover{background:#c99622;}
+
+footer{padding:44px 0 40px;border-top:1px solid var(--line);}
+.foot-row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:20px;font-size:14px;color:var(--ink-soft);}
+.foot-links{display:flex;gap:22px;flex-wrap:wrap;}
+
+/* Lesson pages */
+.badge{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--petrol);letter-spacing:.02em;}
+.breadcrumb{padding:20px 0 0;font-size:14px;color:var(--ink-soft);}
+.breadcrumb a{color:var(--petrol);font-weight:600;}
+.lesson-hero{padding:20px 0 40px;border-bottom:1px solid var(--line);}
+.lesson-hero h1{font-size:clamp(28px,4vw,42px);font-weight:800;max-width:700px;margin-top:14px;}
+.lesson-hero p.lead{margin-top:16px;font-size:17px;color:var(--ink-soft);max-width:620px;}
+.lesson-body{padding:48px 0;max-width:720px;}
+.lesson-body h2{font-size:22px;font-weight:700;margin-top:44px;margin-bottom:14px;}
+.lesson-body h2:first-child{margin-top:0;}
+.lesson-body p{margin:16px 0;font-size:16px;}
+.lesson-body ul{margin:16px 0;padding-left:22px;}
+.lesson-body li{margin:8px 0;font-size:16px;}
+.code-block{
+  background:var(--ink);color:#E9E5D6;font-family:'JetBrains Mono',monospace;font-size:13.5px;
+  padding:20px 22px;border-radius:8px;overflow-x:auto;margin:22px 0;line-height:1.7;
+}
+.code-block .c1{color:#7FBFA0;}
+.code-block .c2{color:#D9A62E;}
+.code-block .c3{color:#8FA7C4;}
+.code-block .comment{color:#8A8676;}
+.exercise{
+  border-left:3px solid var(--mustard);background:var(--paper-dim);
+  padding:20px 24px;margin:36px 0;border-radius:0 var(--radius) var(--radius) 0;
+}
+.exercise h3{font-size:16px;font-weight:700;margin-bottom:10px;}
+.exercise p{margin:8px 0;font-size:15px;}
+.lesson-nav{display:flex;justify-content:space-between;gap:20px;padding:32px 0 8px;border-top:1px solid var(--line);margin-top:8px;flex-wrap:wrap;}
+.lesson-nav a{font-size:14px;font-weight:600;color:var(--petrol);}
+
+/* Progress and gamification */
+.progress-panel{background:var(--paper-dim);border-radius:10px;padding:24px 28px;margin:0 0 44px;display:flex;flex-direction:column;gap:16px;}
+.progress-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+.progress-top h3{font-size:15px;font-weight:700;}
+.points-pill{font-family:'JetBrains Mono',monospace;font-weight:600;font-size:13px;background:var(--petrol);color:var(--white);padding:6px 14px;border-radius:20px;white-space:nowrap;}
+.progress-track{height:8px;background:var(--line);border-radius:4px;overflow:hidden;}
+.progress-fill{height:100%;background:var(--mustard);transition:width .4s ease;width:0%;}
+.badge-row{display:flex;gap:10px;flex-wrap:wrap;}
+.badge-chip{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;padding:7px 13px;border-radius:20px;border:1px solid var(--line);color:var(--ink-soft);background:transparent;}
+.badge-chip.unlocked{border-color:var(--petrol);color:var(--petrol);background:var(--white);}
+.badge-chip .dot{width:7px;height:7px;border-radius:50%;background:var(--line);flex:none;}
+.badge-chip.unlocked .dot{background:var(--mustard);}
+
+.card{position:relative;}
+.card .done-mark{position:absolute;top:14px;right:14px;width:22px;height:22px;border-radius:50%;background:var(--petrol);color:var(--white);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;}
+
+.complete-box{margin-top:40px;padding-top:28px;border-top:1px solid var(--line);}
+.complete-btn{padding:14px 26px;border-radius:6px;background:var(--petrol);color:var(--white);font-weight:700;font-size:15px;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-family:'Inter',sans-serif;}
+.complete-btn:hover{background:var(--petrol-deep);}
+.complete-btn.done{background:var(--paper-dim);color:var(--ink-soft);border:1px solid var(--line);cursor:default;}
+
+/* Celebration */
+.toast-celebrate{
+  position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);
+  background:linear-gradient(135deg,var(--petrol),var(--mustard));
+  color:#fff;padding:16px 26px;border-radius:12px;font-weight:700;font-size:15px;
+  box-shadow:0 14px 34px -10px rgba(0,0,0,.4);opacity:0;pointer-events:none;
+  transition:opacity .3s ease, transform .3s ease;z-index:200;max-width:88vw;text-align:center;
+}
+.toast-celebrate.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+.badge-unlock-overlay{
+  position:fixed;inset:0;background:rgba(33,31,26,.55);display:flex;align-items:center;justify-content:center;
+  z-index:300;opacity:0;pointer-events:none;transition:opacity .25s ease;
+}
+.badge-unlock-overlay.show{opacity:1;pointer-events:auto;}
+.badge-unlock-card{
+  background:#fff;border-radius:16px;padding:34px 28px;text-align:center;max-width:320px;
+  box-shadow:0 30px 60px -20px rgba(0,0,0,.4);animation:dy-pop .35s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes dy-pop{0%{transform:scale(.7);opacity:0;}100%{transform:scale(1);opacity:1;}}
+.badge-unlock-card .emoji{font-size:48px;margin-bottom:12px;}
+.badge-unlock-card h3{font-size:20px;font-weight:800;margin-bottom:8px;}
+.badge-unlock-card p{font-size:14px;color:var(--ink-soft);margin-bottom:20px;}
+.badge-unlock-card button{background:var(--petrol);color:#fff;border:none;padding:10px 24px;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;}
+
+.confetti-piece{position:fixed;top:-24px;z-index:250;pointer-events:none;animation:dy-confetti-fall linear forwards;}
+@keyframes dy-confetti-fall{
+  0%{transform:translateY(0) rotate(0deg);opacity:1;}
+  100%{transform:translateY(100vh) rotate(360deg);opacity:0;}
+}
+
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto;}
+  .caret{animation:none;opacity:1;}
+  .confetti-piece{display:none;}
+}
+
+</style>
+<script>
+const DY_LESSONS = [
+  {id:"python-asoslari", title:"Python asoslari"},
+  {id:"javascript-tanishuv", title:"JavaScript bilan tanishuv"},
+  {id:"git-github", title:"Git va GitHub"},
+  {id:"malumotlar-bazasi", title:"Ma'lumotlar bazalari"},
+  {id:"veb-dizayn", title:"Veb-dizayn asoslari"},
+  {id:"algoritmlar", title:"Algoritmlar va masalalar"}
+];
+
+const DY_BADGES = [
+  {id:"boshladim", label:"Birinchi qadam", need:1},
+  {id:"yarim", label:"Yarim yo'lda", need:3},
+  {id:"dasturchi", label:"Dasturchi", need:6}
+];
+
+const DY_PRAISE = [
+  "Zo'r ishladingiz!",
+  "Ajoyib natija!",
+  "Siz haqiqiy champion!",
+  "Mukammal, shunday davom eting!",
+  "Zo'r qadam qo'ydingiz!",
+  "Siz kuchli dasturchisiz!",
+  "Bravo! Davom eting!",
+  "Ajoyib, tabriklaymiz!"
+];
+
+function dyGetProgress(){
+  try{
+    return JSON.parse(localStorage.getItem("dy_progress") || "[]");
+  }catch(e){
+    return [];
+  }
+}
+
+function dySaveProgress(list){
+  try{
+    localStorage.setItem("dy_progress", JSON.stringify(list));
+  }catch(e){}
+}
+
+function dyMarkComplete(id){
+  const list = dyGetProgress();
+  if(!list.includes(id)){
+    list.push(id);
+    dySaveProgress(list);
+  }
+  return list;
+}
+
+function dyRenderProgressPanel(containerId){
+  const el = document.getElementById(containerId);
+  if(!el) return;
+  const done = dyGetProgress();
+  const total = DY_LESSONS.length;
+  const pct = Math.round((done.length / total) * 100);
+  const points = done.length * 10;
+
+  let badgesHtml = "";
+  DY_BADGES.forEach(b => {
+    const unlocked = done.length >= b.need;
+    badgesHtml += `<div class="badge-chip${unlocked ? " unlocked" : ""}"><span class="dot"></span>${b.label}</div>`;
+  });
+
+  el.innerHTML = `
+    <div class="progress-top">
+      <h3>Sizning progressingiz</h3>
+      <span class="points-pill">${points} ball · ${done.length}/${total} dars</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
+    <div class="badge-row">${badgesHtml}</div>
+  `;
+}
+
+function dyMarkDoneCards(){
+  const done = dyGetProgress();
+  document.querySelectorAll("[data-lesson-id]").forEach(card => {
+    const id = card.getAttribute("data-lesson-id");
+    if(done.includes(id) && !card.querySelector(".done-mark")){
+      const mark = document.createElement("span");
+      mark.className = "done-mark";
+      mark.textContent = "✓";
+      card.appendChild(mark);
+    }
+  });
+}
+
+function dyConfetti(){
+  const emojis = ["🎉","✨","🎊","⭐","🔥","🏆","🚀"];
+  for(let i = 0; i < 18; i++){
+    const el = document.createElement("div");
+    el.className = "confetti-piece";
+    el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    el.style.left = Math.random() * 100 + "vw";
+    el.style.fontSize = (16 + Math.random() * 14) + "px";
+    el.style.animationDuration = (2 + Math.random() * 1.4) + "s";
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 3800);
+  }
+}
+
+function dyShowToast(msg){
+  let toast = document.getElementById("dyToast");
+  if(!toast){
+    toast = document.createElement("div");
+    toast.id = "dyToast";
+    toast.className = "toast-celebrate";
+    document.body.appendChild(toast);
+  }
+  toast.textContent = msg;
+  toast.classList.add("show");
+  clearTimeout(toast._dyTimer);
+  toast._dyTimer = setTimeout(() => toast.classList.remove("show"), 3200);
+}
+
+function dyShowBadgeUnlock(label){
+  const overlay = document.createElement("div");
+  overlay.className = "badge-unlock-overlay";
+  overlay.innerHTML = `
+    <div class="badge-unlock-card">
+      <div class="emoji">🏆</div>
+      <h3>Yangi yutuq ochildi!</h3>
+      <p>Siz <b>"${label}"</b> yutug'ini qo'lga kiritdingiz!</p>
+      <button type="button">Ajoyib!</button>
+    </div>`;
+  document.body.appendChild(overlay);
+  requestAnimationFrame(() => overlay.classList.add("show"));
+  overlay.querySelector("button").addEventListener("click", () => {
+    overlay.classList.remove("show");
+    setTimeout(() => overlay.remove(), 300);
+  });
+  dyConfetti();
+}
+
+function dySetupCompleteButton(lessonId){
+  const btn = document.getElementById("completeBtn");
+  if(!btn) return;
+  const done = dyGetProgress();
+  if(done.includes(lessonId)){
+    btn.textContent = "✓ Dars tugatildi";
+    btn.classList.add("done");
+    btn.disabled = true;
+  }
+  btn.addEventListener("click", () => {
+    if(btn.classList.contains("done")) return;
+    const before = dyGetProgress().length;
+    const list = dyMarkComplete(lessonId);
+    const after = list.length;
+
+    btn.textContent = "✓ Dars tugatildi";
+    btn.classList.add("done");
+    btn.disabled = true;
+
+    const praise = DY_PRAISE[Math.floor(Math.random() * DY_PRAISE.length)];
+    dyShowToast(`${praise} +10 ball 🎉`);
+    dyConfetti();
+
+    const newlyUnlocked = DY_BADGES.find(b => b.need === after && before < b.need);
+    if(newlyUnlocked){
+      setTimeout(() => dyShowBadgeUnlock(newlyUnlocked.label), 900);
+    }
+  });
+}
+
+</script>
+</head>
+<body>
+<a href="#main" class="skip-link">Asosiy kontentga o'tish</a>
+
+<header>
+  <div class="wrap nav-row">
+    <a href="index.html" class="brand"><span class="tag-open">&lt;/&gt;</span>&nbsp;Dasturchi Yo'li</a>
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navList">Menyu</button>
+    <nav>
+      <ul id="navList">
+        <li><a href="#darsliklar">Darsliklar</a></li>
+        <li><a href="#nega-biz">Nega biz</a></li>
+        <li><a href="#boshlash">Boshlash</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" id="top">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow-line"><span class="dot"></span>Bepul va ona tilingizda</div>
+        <h1>Kod yozishni <span class="accent">noldan</span> o'rganing, oxirigacha yetkazamiz.</h1>
+        <p class="lead">Python, JavaScript va Git asoslaridan tortib real loyihalargacha — hammasi sodda o'zbek tilida, misollar va mashqlar bilan.</p>
+        <div class="cta-row">
+          <a href="#darsliklar" class="btn btn-primary">Darsliklarni ko'rish</a>
+          <a href="#nega-biz" class="btn btn-ghost">Batafsil</a>
+        </div>
+      </div>
+      <div class="term" aria-hidden="true">
+        <div class="term-bar"><span></span><span></span><span></span></div>
+        <div class="term-body">
+          <div class="comment"># birinchi dasturingiz</div>
+          <div><span class="c3">def</span> <span class="c1">salom_ber</span>(ism):</div>
+          <div>&nbsp;&nbsp;<span class="c3">return</span> <span class="c2">f"Salom, {ism}!"</span></div>
+          <div>&nbsp;</div>
+          <div><span class="c1">print</span>(salom_ber(<span class="c2">"Dunyo"</span>))</div>
+          <div class="comment">&gt;&gt;&gt; Salom, Dunyo!<span class="caret"></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="darsliklar">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <h2>Darsliklar</h2>
+          <p>Noldan boshlab, qadam-baqadam.</p>
+        </div>
+        <div class="section-num">01 — 06</div>
+      </div>
+      <div id="progressPanel" class="progress-panel"></div>
+      <div class="grid">
+        <a class="card" href="python-asoslari.html" data-lesson-id="python-asoslari">
+          <div class="level">BOSHLANG'ICH</div>
+          <h3>Python asoslari</h3>
+          <p>O'zgaruvchilar, sikllar va funksiyalar — birinchi dasturingizni shu yerdan boshlang.</p>
+          <span class="go">Darsni boshlash</span>
+        </a>
+        <a class="card" href="javascript-tanishuv.html" data-lesson-id="javascript-tanishuv">
+          <div class="level">BOSHLANG'ICH</div>
+          <h3>JavaScript bilan tanishuv</h3>
+          <p>Veb-sahifani jonlantiruvchi til. Brauzerda birinchi skriptingizni yozing.</p>
+          <span class="go">Darsni boshlash</span>
+        </a>
+        <a class="card" href="git-github.html" data-lesson-id="git-github">
+          <div class="level">O'RTA</div>
+          <h3>Git va GitHub</h3>
+          <p>Kodingizni versiyalash, jamoada ishlash va loyihalarni saqlashni o'rganing.</p>
+          <span class="go">Darsni boshlash</span>
+        </a>
+        <a class="card" href="malumotlar-bazasi.html" data-lesson-id="malumotlar-bazasi">
+          <div class="level">O'RTA</div>
+          <h3>Ma'lumotlar bazalari asoslari</h3>
+          <p>SQL yordamida ma'lumotlarni saqlash, so'rash va boshqarishni o'rganing.</p>
+          <span class="go">Darsni boshlash</span>
+        </a>
+        <a class="card" href="veb-dizayn.html" data-lesson-id="veb-dizayn">
+          <div class="level">BOSHLANG'ICH</div>
+          <h3>Veb-dizayn asoslari</h3>
+          <p>HTML va CSS yordamida birinchi veb-sahifangizni yarating.</p>
+          <span class="go">Darsni boshlash</span>
+        </a>
+        <a class="card" href="algoritmlar.html" data-lesson-id="algoritmlar">
+          <div class="level">YUQORI</div>
+          <h3>Algoritmlar va masalalar</h3>
+          <p>Muammolarni samarali yechish mantig'ini rivojlantiring, misollar bilan mashq qiling.</p>
+          <span class="go">Darsni boshlash</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="nega-biz">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <h2>Nega Dasturchi Yo'li?</h2>
+          <p>Har bir tafsilot o'rganishni osonlashtirish uchun o'ylab yaratilgan.</p>
+        </div>
+      </div>
+      <div class="why-grid">
+        <div class="why-item">
+          <div class="why-mark">Uz</div>
+          <h3>Ona tilida tushuntirish</h3>
+          <p>Murakkab tushunchalar sodda, tabiiy o'zbek tilida — tarjima emas, to'g'ridan-to'g'ri yozilgan.</p>
+        </div>
+        <div class="why-item">
+          <div class="why-mark">$0</div>
+          <h3>To'liq bepul</h3>
+          <p>Barcha darsliklar, mashqlar va materiallar hech qanday to'lovsiz ochiq turadi.</p>
+        </div>
+        <div class="why-item">
+          <div class="why-mark">&gt;_</div>
+          <h3>Amaliyot orqali</h3>
+          <p>Har bir mavzudan so'ng real mashqlar — nazariya emas, qo'l bilan kod yozib o'rganasiz.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="boshlash">
+    <div class="wrap band-inner">
+      <h2>Birinchi darsni bugun boshlang.</h2>
+      <a href="python-asoslari.html" class="btn btn-primary">Hoziroq boshlash</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot-row">
+    <div>© 2026 Dasturchi Yo'li. Barcha huquqlar himoyalangan.</div>
+    <div class="foot-links">
+      <a href="#darsliklar">Darsliklar</a>
+      <a href="#nega-biz">Nega biz</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const toggle = document.getElementById('navToggle');
+  const list = document.getElementById('navList');
+  toggle.addEventListener('click', () => {
+    const isOpen = list.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', isOpen);
+  });
+  dyRenderProgressPanel('progressPanel');
+  dyMarkDoneCards();
+</script>
+</body>
+</html>
