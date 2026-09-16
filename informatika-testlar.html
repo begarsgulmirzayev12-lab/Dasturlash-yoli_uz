@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Informatika Testlari — Dasturchi Yo'li</title>
+<style>
+  :root{
+    --cream:#f2f0e9;
+    --card:#f8f7f2;
+    --white:#ffffff;
+    --border:#ddd8c9;
+    --teal:#155048;
+    --teal-dark:#0d3a34;
+    --teal-tint:#e3ede9;
+    --gold:#d1a12e;
+    --gold-dark:#b98a1e;
+    --text:#1c1c18;
+    --muted:#6f6d61;
+    --red:#b3462f;
+    --red-tint:#f5e4de;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:-apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    background:var(--cream);
+    color:var(--text);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    padding:0 0 60px;
+  }
+  .wrap{
+    width:100%;
+    max-width:640px;
+  }
+  header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:18px 20px;
+    border-bottom:1px solid var(--border);
+    margin-bottom:28px;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-weight:800;
+    font-size:1.15rem;
+  }
+  .brand .mark{
+    font-family:'Courier New', monospace;
+    color:var(--teal);
+    font-weight:800;
+  }
+  .menyu-pill{
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:6px 14px;
+    font-size:0.85rem;
+    color:var(--text);
+    background:var(--white);
+  }
+  main{ padding:0 20px; }
+
+  .eyebrow{
+    text-transform:uppercase;
+    letter-spacing:0.09em;
+    font-size:0.72rem;
+    font-weight:700;
+    color:var(--teal);
+    margin-bottom:6px;
+  }
+  h1.page-title{
+    font-size:1.5rem;
+    font-weight:800;
+    margin:0 0 6px;
+  }
+  .subtitle{
+    color:var(--muted);
+    margin:0 0 26px;
+    font-size:0.95rem;
+  }
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    overflow:hidden;
+  }
+
+  /* --- MENU / LEVEL LIST --- */
+  .level-row{
+    display:block;
+    width:100%;
+    text-align:left;
+    padding:22px 22px;
+    border:none;
+    border-bottom:1px solid var(--border);
+    background:transparent;
+    cursor:pointer;
+    font-family:inherit;
+  }
+  .level-row:last-child{ border-bottom:none; }
+  .level-row:hover{ background:var(--teal-tint); }
+  .level-title{
+    font-size:1.1rem;
+    font-weight:800;
+    margin:2px 0 6px;
+    color:var(--text);
+  }
+  .level-desc{
+    color:var(--muted);
+    font-size:0.9rem;
+    line-height:1.4;
+    margin-bottom:12px;
+  }
+  .level-cta{
+    display:inline-block;
+    font-weight:700;
+    font-size:0.9rem;
+    color:var(--text);
+    border-bottom:2px solid var(--gold);
+    padding-bottom:2px;
+  }
+
+  /* --- QUIZ SCREEN --- */
+  .quiz-box{ padding:22px; }
+  .top-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+  }
+  .back-link{
+    color:var(--muted);
+    cursor:pointer;
+    font-size:0.85rem;
+    border:none;
+    background:none;
+    font-family:inherit;
+    padding:0;
+  }
+  .back-link:hover{ color:var(--text); }
+  .timer-pill{
+    font-weight:800;
+    font-size:0.9rem;
+    color:var(--teal);
+    padding:6px 14px;
+    border-radius:20px;
+    background:var(--teal-tint);
+    border:1px solid var(--teal);
+    min-width:44px;
+    text-align:center;
+  }
+  .timer-pill.warn{
+    color:var(--red);
+    background:var(--red-tint);
+    border-color:var(--red);
+  }
+
+  .status-pill{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:var(--teal);
+    color:var(--white);
+    font-weight:700;
+    font-size:0.85rem;
+    padding:8px 16px;
+    border-radius:30px;
+    margin-bottom:14px;
+  }
+  .progress-track{
+    width:100%;
+    height:8px;
+    background:#e6e2d4;
+    border-radius:6px;
+    overflow:hidden;
+    margin-bottom:10px;
+  }
+  .progress-fill{
+    height:100%;
+    background:var(--gold);
+    transition:width .3s ease;
+  }
+  .timer-track{
+    width:100%;
+    height:3px;
+    background:#e6e2d4;
+    border-radius:4px;
+    overflow:hidden;
+    margin-bottom:24px;
+  }
+  .timer-fill{
+    height:100%;
+    background:var(--teal);
+    width:100%;
+    transition:width 1s linear, background .3s ease;
+  }
+  .timer-fill.warn{ background:var(--red); }
+
+  .question-text{
+    font-size:1.15rem;
+    font-weight:800;
+    margin-bottom:20px;
+    line-height:1.45;
+  }
+  .options{ display:grid; gap:10px; }
+  .option-btn{
+    padding:15px 16px;
+    border-radius:10px;
+    border:1px solid var(--border);
+    background:var(--white);
+    color:var(--text);
+    font-size:0.98rem;
+    text-align:left;
+    cursor:pointer;
+    font-family:inherit;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .option-btn:hover:not(:disabled){
+    border-color:var(--teal);
+    background:var(--teal-tint);
+  }
+  .option-btn:disabled{ cursor:default; }
+  .option-btn.correct{
+    background:var(--teal-tint);
+    border-color:var(--teal);
+    color:var(--teal-dark);
+    font-weight:700;
+  }
+  .option-btn.wrong{
+    background:var(--red-tint);
+    border-color:var(--red);
+    color:var(--red);
+    font-weight:700;
+  }
+
+  .next-row{ margin-top:22px; display:flex; justify-content:flex-end; }
+  .btn-solid{
+    padding:12px 26px;
+    border-radius:8px;
+    border:none;
+    background:var(--teal);
+    color:var(--white);
+    font-size:0.95rem;
+    font-weight:700;
+    cursor:pointer;
+    font-family:inherit;
+    transition:background .15s ease;
+  }
+  .btn-solid:hover:not(:disabled){ background:var(--teal-dark); }
+  .btn-solid:disabled{ opacity:0.35; cursor:not-allowed; }
+  .btn-outline{
+    padding:12px 26px;
+    border-radius:8px;
+    border:1px solid var(--text);
+    background:transparent;
+    color:var(--text);
+    font-size:0.9rem;
+    font-weight:700;
+    cursor:pointer;
+    font-family:inherit;
+  }
+  .btn-outline:hover{ background:var(--white); }
+
+  /* --- RESULT SCREEN --- */
+  .result-box{ padding:36px 26px; text-align:center; }
+  .result-score{
+    font-size:3rem;
+    font-weight:800;
+    margin:16px 0 8px;
+    color:var(--teal);
+  }
+  .result-sub{ color:var(--muted); font-size:0.95rem; margin-bottom:4px; }
+  .result-feedback{ color:var(--text); font-size:1rem; margin-bottom:28px; }
+  .result-actions{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+
+  /* --- toast + confetti --- */
+  .correct-toast{
+    position:fixed;
+    top:20px; left:50%;
+    transform:translateX(-50%) translateY(-20px);
+    background:var(--teal);
+    color:var(--white);
+    padding:10px 24px;
+    border-radius:30px;
+    font-weight:700;
+    font-size:0.95rem;
+    opacity:0;
+    transition:opacity .25s ease, transform .25s ease;
+    z-index:50;
+    box-shadow:0 6px 20px rgba(21,80,72,0.35);
+  }
+  .correct-toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+  #confetti-canvas{
+    position:fixed; top:0; left:0;
+    width:100%; height:100%;
+    pointer-events:none;
+    z-index:40;
+  }
+  .hidden{ display:none; }
+</style>
+</head>
+<body>
+<canvas id="confetti-canvas"></canvas>
+<div class="correct-toast" id="correct-toast">To'g'ri javob</div>
+
+<div class="wrap">
+  <header>
+    <div class="brand"><span class="mark">&lt;/&gt;</span> Dasturchi Yo'li</div>
+    <div class="menyu-pill">Testlar</div>
+  </header>
+
+  <main>
+    <!-- MENU SCREEN -->
+    <div id="menu-screen">
+      <p class="eyebrow">Bilimingizni sinang</p>
+      <h1 class="page-title">Informatika testlari</h1>
+      <p class="subtitle">Darajangizga mos bosqichni tanlang va boshlang.</p>
+
+      <div class="card">
+        <button class="level-row" onclick="startQuiz('oson')">
+          <p class="eyebrow">Boshlang'ich</p>
+          <div class="level-title">Oson</div>
+          <div class="level-desc">Dasturlashning asosiy tushunchalari — endi o'rganayotganlar uchun. 10 ta savol.</div>
+          <span class="level-cta">Testni boshlash →</span>
+        </button>
+        <button class="level-row" onclick="startQuiz('ortacha')">
+          <p class="eyebrow">O'rta daraja</p>
+          <div class="level-title">O'rtacha</div>
+          <div class="level-desc">Algoritmlar, OOP va ma'lumotlar tuzilmalari — tajribasi bor dasturchilar uchun. 10 ta savol.</div>
+          <span class="level-cta">Testni boshlash →</span>
+        </button>
+        <button class="level-row" onclick="startQuiz('qiyin')">
+          <p class="eyebrow">Yuqori daraja</p>
+          <div class="level-title">Qiyin</div>
+          <div class="level-desc">Arxitektura, murakkablik nazariyasi va tizim dizayni — professional dasturchilar uchun. 10 ta savol.</div>
+          <span class="level-cta">Testni boshlash →</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- QUIZ SCREEN -->
+    <div id="quiz-screen" class="hidden">
+      <div class="card quiz-box">
+        <div class="top-row">
+          <button class="back-link" onclick="goToMenu()">← Ortga</button>
+          <div class="timer-pill" id="timer-badge">40</div>
+        </div>
+        <div class="status-pill" id="status-pill"></div>
+        <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+        <div class="timer-track"><div class="timer-fill" id="timer-fill"></div></div>
+        <div class="question-text" id="question-text"></div>
+        <div class="options" id="options-container"></div>
+        <div class="next-row">
+          <button class="btn-solid" id="next-btn" onclick="nextQuestion()" disabled>Keyingisi</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESULT SCREEN -->
+    <div id="result-screen" class="hidden">
+      <div class="card result-box">
+        <p class="eyebrow" id="result-level"></p>
+        <div class="result-score" id="result-score"></div>
+        <div class="result-feedback" id="result-feedback"></div>
+        <div class="result-actions">
+          <button class="btn-outline" onclick="goToMenu()">Bosqichlarga qaytish</button>
+          <button class="btn-solid" id="retry-btn">Qayta urinish</button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+const QUIZ_DATA = {
+  oson: {
+    title: "Oson",
+    questions: [
+      { q: "Kompyuterga buyruqlar berish uchun yoziladigan matn qanday nomlanadi?", options: ["Fayl","Dastur kodi","Rasm","Jadval"], correct: 1 },
+      { q: "Quyidagilardan qaysi biri son (raqam) hisoblanadi?", options: ["Salom","25","Kitob","Rost"], correct: 1 },
+      { q: "Ekranga matn yoki natija chiqarish uchun qanday buyruq ishlatiladi?", options: ["chiqarish / print","o'chirish / delete","saqlash / save","yopish / close"], correct: 0 },
+      { q: "Bir xil turdagi ko'p qiymatlarni birga saqlash uchun nima ishlatiladi?", options: ["Bitta o'zgaruvchi","Massiv (ro'yxat)","Rasm","Sarlavha"], correct: 1 },
+      { q: "Bir amalni bir necha marta takrorlash kerak bo'lsa, nima ishlatiladi?", options: ["Sikl (takrorlash)","Izoh","Fayl nomi","Sarlavha"], correct: 0 },
+      { q: "\"Agar yosh 18 dan katta bo'lsa...\" — bu qanday buyruqqa misol?", options: ["Sikl","Shart tekshirish (agar)","O'zgaruvchi e'lon qilish","Massiv"], correct: 1 },
+      { q: "Dasturda kodni tushuntirish uchun yoziladigan, dastur ishlashiga ta'sir qilmaydigan qator nima deyiladi?", options: ["Funksiya","Izoh (comment)","O'zgaruvchi","Massiv"], correct: 1 },
+      { q: "Kod bo'lagini nom bilan belgilab, keyin qayta-qayta chaqirish imkonini beruvchi tuzilma nima deyiladi?", options: ["Funksiya","Fayl","Massiv","Brauzer"], correct: 0 },
+      { q: "\"Ha\" yoki \"Yo'q\" (to'g'ri/noto'g'ri) qiymatini saqlaydigan ma'lumot turi qanday nomlanadi?", options: ["Matn (string)","Mantiqiy (boolean)","Son (integer)","Massiv"], correct: 1 },
+      { q: "Masalani yechish uchun ketma-ket bajariladigan qadamlar rejasi nima deyiladi?", options: ["Algoritm","Brauzer","Fayl","Server"], correct: 0 }
+    ]
+  },
+  ortacha: {
+    title: "O'rtacha",
+    questions: [
+      { q: "Rekursiya (recursion) nima?", options: ["Sikl turi","Funksiyaning o'zini-o'zi chaqirishi","Massivni saralash usuli","Ma'lumotlar bazasi so'rovi"], correct: 1 },
+      { q: "OOPda \"inkapsulyatsiya\" nimani anglatadi?", options: ["Bir nechta klassdan meros olish","Ma'lumot va metodlarni birlashtirib, tashqi ta'sirdan himoyalash","Klassni boshqa klassga aylantirish","Kodni tezlashtirish"], correct: 1 },
+      { q: "Massivni saralashning o'rtacha holatda eng tez ishlaydigan algoritmi qaysi?", options: ["Bubble Sort","Quick Sort","Selection Sort","Linear Search"], correct: 1 },
+      { q: "SQLda `JOIN` operatori nima uchun ishlatiladi?", options: ["Jadvalni o'chirish uchun","Ikki yoki undan ortiq jadvalni bog'lash uchun","Yangi baza yaratish uchun","Ustunni o'chirish uchun"], correct: 1 },
+      { q: "\"Stack\" va \"Queue\" tuzilmalari orasidagi asosiy farq nima?", options: ["Ikkalasi ham bir xil ishlaydi","Stack — LIFO, Queue — FIFO","Stack faqat sonlarni saqlaydi","Queue faqat matnlarni saqlaydi"], correct: 1 },
+      { q: "Meros olish (inheritance) OOPda nimaga xizmat qiladi?", options: ["Xotirani tozalashga","Bir klassning xususiyat va metodlarini boshqa klassga o'tkazishga","Dasturni sekinlashtirishga","Faylni o'qishga"], correct: 1 },
+      { q: "API nima uchun ishlatiladi?", options: ["Faqat dizayn yaratish uchun","Turli dasturlar/tizimlar orasida ma'lumot almashish uchun","Faqat ma'lumotlar bazasini o'chirish uchun","Kompyuterni yoqish uchun"], correct: 1 },
+      { q: "Git'da `commit` nima ishni bajaradi?", options: ["Loyihani internetga yuklaydi","O'zgarishlarni lokal repozitoriyga saqlaydi","Faylni butunlay o'chiradi","Yangi til o'rnatadi"], correct: 1 },
+      { q: "Big O notatsiyasida `O(n log n)` odatda qaysi algoritm turiga xos?", options: ["Chiziqli qidiruv","Yaxshi saralash algoritmlari (masalan, Merge Sort)","Doimiy vaqtli operatsiyalar","Ikki o'lchamli massiv yaratish"], correct: 1 },
+      { q: "\"Exception handling\" (try/catch) nima uchun kerak?", options: ["Dasturni tezlashtirish uchun","Kutilmagan xatoliklarni boshqarish va dastur ishlashini to'xtatmaslik uchun","Yangi o'zgaruvchi yaratish uchun","Massivni saralash uchun"], correct: 1 }
+    ]
+  },
+  qiyin: {
+    title: "Qiyin",
+    questions: [
+      { q: "Binary Search algoritmining vaqt murakkabligi qanday?", options: ["O(n)","O(log n)","O(n²)","O(1)"], correct: 1 },
+      { q: "CAP teoremasiga ko'ra, taqsimlangan tizim bir vaqtning o'zida qaysi uchtadan faqat ikkitasini ta'minlay oladi?", options: ["Speed, Cost, Accuracy","Consistency, Availability, Partition tolerance","Security, Scalability, Simplicity","Memory, CPU, Network"], correct: 1 },
+      { q: "Deadlock yuzaga kelishi uchun quyidagi shartlardan qaysi biri SHART EMAS?", options: ["Mutual exclusion","Hold and wait","Preemption (resursni majburan olib qo'yish)","Circular wait"], correct: 2 },
+      { q: "Dependency Injection dizayn patternining asosiy maqsadi nima?", options: ["Kodni sekinlashtirish","Klasslar orasidagi bog'liqlikni kamaytirib, moslashuvchanlikni oshirish","Xotirani ko'proq sarflash","Faqat testlash imkonsiz qilish"], correct: 1 },
+      { q: "B-daraxt (B-tree) ma'lumotlar bazalarida ko'pincha nima uchun ishlatiladi?", options: ["Faqat matnni shifrlash uchun","Diskda indekslashni tezlashtirish uchun","Tarmoq xavfsizligini ta'minlash uchun","Videoni siqish uchun"], correct: 1 },
+      { q: "TCP va UDP protokollari orasidagi asosiy farq nima?", options: ["Ikkalasi ham xatoni tuzatmaydi","TCP ulanishga asoslangan va yetkazishni kafolatlaydi, UDP esa tezroq lekin kafolatsiz","UDP faqat elektron pochta uchun ishlatiladi","TCP faqat video oqim uchun ishlatiladi"], correct: 1 },
+      { q: "Garbage Collection dasturlash tillarida nima vazifani bajaradi?", options: ["Kodni tezroq kompilyatsiya qiladi","Ishlatilmay qolgan xotirani avtomatik tozalaydi","Fayllarni internetga yuklaydi","Dasturni shifrlaydi"], correct: 1 },
+      { q: "Amortizatsiyalangan (amortized) vaqt murakkabligi nimani anglatadi?", options: ["Har doim eng yomon holatdagi vaqt","Ko'p amallar ketma-ketligida o'rtacha hisoblangan vaqt murakkabligi","Faqat bitta amalning vaqti","Xotira sarfini o'lchash usuli"], correct: 1 },
+      { q: "Mikroservis arxitekturasining monolit arxitekturadan asosiy afzalligi nima?", options: ["Har doim tezroq ishlaydi","Xizmatlarni mustaqil ishlab chiqish, joylashtirish va masshtablash imkoniyati","Kodni bitta faylga jamlaydi","Ma'lumotlar bazasini talab qilmaydi"], correct: 1 },
+      { q: "SOLID prinsiplaridagi \"S\" (Single Responsibility Principle) nimani anglatadi?", options: ["Bitta dastur faqat bitta tilda yozilishi kerak","Har bir klass faqat bitta vazifaga ega bo'lishi kerak","Bitta loyihada bitta dasturchi ishlashi kerak","Klasslar faqat bitta metodga ega bo'lishi kerak"], correct: 1 }
+    ]
+  }
+};
+
+const TIME_LIMIT = 40;
+let currentLevel = null;
+let currentIndex = 0;
+let score = 0;
+let answered = false;
+let timerInterval = null;
+let timeLeft = TIME_LIMIT;
+
+const menuScreen = document.getElementById('menu-screen');
+const quizScreen = document.getElementById('quiz-screen');
+const resultScreen = document.getElementById('result-screen');
+const statusPill = document.getElementById('status-pill');
+const progressFill = document.getElementById('progress-fill');
+const timerFill = document.getElementById('timer-fill');
+const timerBadge = document.getElementById('timer-badge');
+const questionText = document.getElementById('question-text');
+const optionsContainer = document.getElementById('options-container');
+const nextBtn = document.getElementById('next-btn');
+const correctToast = document.getElementById('correct-toast');
+
+function startQuiz(level){
+  currentLevel = level;
+  currentIndex = 0;
+  score = 0;
+  menuScreen.classList.add('hidden');
+  resultScreen.classList.add('hidden');
+  quizScreen.classList.remove('hidden');
+  renderQuestion();
+}
+
+function renderQuestion(){
+  answered = false;
+  nextBtn.disabled = true;
+  const data = QUIZ_DATA[currentLevel];
+  const q = data.questions[currentIndex];
+  statusPill.textContent = `${data.title} · ${score} ball · ${currentIndex + 1}/${data.questions.length} savol`;
+  progressFill.style.width = `${((currentIndex) / data.questions.length) * 100}%`;
+  questionText.textContent = q.q;
+  optionsContainer.innerHTML = '';
+
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.textContent = opt;
+    btn.onclick = () => selectAnswer(i);
+    optionsContainer.appendChild(btn);
+  });
+
+  nextBtn.textContent = (currentIndex === data.questions.length - 1) ? "Yakunlash" : "Keyingisi";
+  startTimer();
+}
+
+function startTimer(){
+  clearInterval(timerInterval);
+  timeLeft = TIME_LIMIT;
+  updateTimerUI();
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    updateTimerUI();
+    if(timeLeft <= 0){
+      clearInterval(timerInterval);
+      handleTimeout();
+    }
+  }, 1000);
+}
+
+function updateTimerUI(){
+  timerBadge.textContent = timeLeft;
+  const pct = (timeLeft / TIME_LIMIT) * 100;
+  timerFill.style.width = `${pct}%`;
+  const isWarn = timeLeft <= 10;
+  timerBadge.classList.toggle('warn', isWarn);
+  timerFill.classList.toggle('warn', isWarn);
+}
+
+function handleTimeout(){
+  if(answered) return;
+  answered = true;
+  const data = QUIZ_DATA[currentLevel];
+  const q = data.questions[currentIndex];
+  const buttons = optionsContainer.querySelectorAll('.option-btn');
+  buttons.forEach((btn, i) => {
+    btn.disabled = true;
+    if(i === q.correct) btn.classList.add('correct');
+  });
+  setTimeout(() => { advance(); }, 1200);
+}
+
+function selectAnswer(selectedIndex){
+  if(answered) return;
+  answered = true;
+  clearInterval(timerInterval);
+  const data = QUIZ_DATA[currentLevel];
+  const q = data.questions[currentIndex];
+  const buttons = optionsContainer.querySelectorAll('.option-btn');
+
+  buttons.forEach((btn, i) => {
+    btn.disabled = true;
+    if(i === q.correct){
+      btn.classList.add('correct');
+    }
+    if(i === selectedIndex && selectedIndex !== q.correct){
+      btn.classList.add('wrong');
+    }
+  });
+
+  if(selectedIndex === q.correct){
+    score++;
+    showCorrectFeedback();
+  }
+
+  nextBtn.disabled = false;
+}
+
+function showCorrectFeedback(){
+  correctToast.classList.add('show');
+  fireConfetti();
+  setTimeout(() => { correctToast.classList.remove('show'); }, 1400);
+}
+
+function nextQuestion(){ advance(); }
+
+function advance(){
+  clearInterval(timerInterval);
+  const data = QUIZ_DATA[currentLevel];
+  if(currentIndex < data.questions.length - 1){
+    currentIndex++;
+    renderQuestion();
+  } else {
+    progressFill.style.width = '100%';
+    showResult();
+  }
+}
+
+function showResult(){
+  quizScreen.classList.add('hidden');
+  resultScreen.classList.remove('hidden');
+  const data = QUIZ_DATA[currentLevel];
+  const total = data.questions.length;
+  const percent = Math.round((score / total) * 100);
+
+  document.getElementById('result-level').textContent = `${data.title} bosqichi natijasi`;
+  document.getElementById('result-score').textContent = `${score} / ${total}`;
+
+  let feedback = '';
+  if(percent === 100) feedback = "Barcha savollarga to'g'ri javob berdingiz.";
+  else if(percent >= 80) feedback = "Juda yaxshi natija.";
+  else if(percent >= 50) feedback = "Yaxshi natija, davom eting.";
+  else feedback = "Mavzuni yana bir bor takrorlab, qayta urinib ko'ring.";
+  document.getElementById('result-feedback').textContent = feedback;
+
+  document.getElementById('retry-btn').onclick = () => startQuiz(currentLevel);
+}
+
+function goToMenu(){
+  clearInterval(timerInterval);
+  quizScreen.classList.add('hidden');
+  resultScreen.classList.add('hidden');
+  menuScreen.classList.remove('hidden');
+}
+
+/* --- Confetti --- */
+const canvas = document.getElementById('confetti-canvas');
+const ctx = canvas.getContext('2d');
+function resizeCanvas(){
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+let confettiPieces = [];
+let confettiAnimating = false;
+const confettiColors = ['#155048','#d1a12e','#3f7d72','#e8cf8a','#0d3a34'];
+
+function fireConfetti(){
+  const count = 60;
+  for(let i=0;i<count;i++){
+    confettiPieces.push({
+      x: Math.random() * canvas.width,
+      y: -20 - Math.random()*100,
+      size: 4 + Math.random()*5,
+      speedY: 2 + Math.random()*3,
+      speedX: (Math.random()-0.5)*2,
+      rotation: Math.random()*360,
+      rotSpeed: (Math.random()-0.5)*10,
+      color: confettiColors[Math.floor(Math.random()*confettiColors.length)],
+      life: 0
+    });
+  }
+  if(!confettiAnimating){
+    confettiAnimating = true;
+    requestAnimationFrame(animateConfetti);
+  }
+}
+
+function animateConfetti(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  confettiPieces.forEach(p => {
+    p.x += p.speedX;
+    p.y += p.speedY;
+    p.rotation += p.rotSpeed;
+    p.life++;
+    ctx.save();
+    ctx.translate(p.x, p.y);
+    ctx.rotate(p.rotation * Math.PI / 180);
+    ctx.fillStyle = p.color;
+    ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size*0.5);
+    ctx.restore();
+  });
+  confettiPieces = confettiPieces.filter(p => p.y < canvas.height + 30 && p.life < 400);
+  if(confettiPieces.length > 0){
+    requestAnimationFrame(animateConfetti);
+  } else {
+    confettiAnimating = false;
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+  }
+}
+</script>
+</body>
+</html>
