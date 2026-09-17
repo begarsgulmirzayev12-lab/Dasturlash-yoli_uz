@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Informatika Testlari — Dasturchi Yo'li</title>
+<style>
+  :root{
+    --cream:#f2f0e9;
+    --card:#f8f7f2;
+    --white:#ffffff;
+    --border:#ddd8c9;
+    --teal:#155048;
+    --teal-dark:#0d3a34;
+    --teal-tint:#e3ede9;
+    --gold:#d1a12e;
+    --gold-dark:#b98a1e;
+    --text:#1c1c18;
+    --muted:#6f6d61;
+    --red:#b3462f;
+    --red-tint:#f5e4de;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:-apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    background:var(--cream);
+    color:var(--text);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    padding:0 0 60px;
+  }
+  .wrap{ width:100%; max-width:640px; }
+  header{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 20px; border-bottom:1px solid var(--border); margin-bottom:28px;
+  }
+  .brand{ display:flex; align-items:center; gap:10px; font-weight:800; font-size:1.15rem; }
+  .brand .mark{ font-family:'Courier New', monospace; color:var(--teal); font-weight:800; }
+  .menyu-pill{ border:1px solid var(--border); border-radius:8px; padding:6px 14px; font-size:0.85rem; color:var(--text); background:var(--white); }
+  main{ padding:0 20px; }
+  .eyebrow{ text-transform:uppercase; letter-spacing:0.09em; font-size:0.72rem; font-weight:700; color:var(--teal); margin-bottom:6px; }
+  h1.page-title{ font-size:1.5rem; font-weight:800; margin:0 0 6px; }
+  .subtitle{ color:var(--muted); margin:0 0 26px; font-size:0.95rem; }
+  .card{ background:var(--card); border:1px solid var(--border); border-radius:12px; overflow:hidden; }
+  .level-row{ display:block; width:100%; text-align:left; padding:22px 22px; border:none; border-bottom:1px solid var(--border); background:transparent; cursor:pointer; font-family:inherit; }
+  .level-row:last-child{ border-bottom:none; }
+  .level-row:hover{ background:var(--teal-tint); }
+  .level-title{ font-size:1.1rem; font-weight:800; margin:2px 0 6px; color:var(--text); }
+  .level-desc{ color:var(--muted); font-size:0.9rem; line-height:1.4; margin-bottom:12px; }
+  .level-cta{ display:inline-block; font-weight:700; font-size:0.9rem; color:var(--text); border-bottom:2px solid var(--gold); padding-bottom:2px; }
+  .quiz-box{ padding:22px; }
+  .top-row{ display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; }
+  .back-link{ color:var(--muted); cursor:pointer; font-size:0.85rem; border:none; background:none; font-family:inherit; padding:0; }
+  .back-link:hover{ color:var(--text); }
+  .timer-pill{ font-weight:800; font-size:0.9rem; color:var(--teal); padding:6px 14px; border-radius:20px; background:var(--teal-tint); border:1px solid var(--teal); min-width:44px; text-align:center; }
+  .timer-pill.warn{ color:var(--red); background:var(--red-tint); border-color:var(--red); }
+  .status-pill{ display:inline-flex; align-items:center; gap:8px; background:var(--teal); color:var(--white); font-weight:700; font-size:0.85rem; padding:8px 16px; border-radius:30px; margin-bottom:14px; }
+  .progress-track{ width:100%; height:8px; background:#e6e2d4; border-radius:6px; overflow:hidden; margin-bottom:10px; }
+  .progress-fill{ height:100%; background:var(--gold); transition:width .3s ease; }
+  .timer-track{ width:100%; height:3px; background:#e6e2d4; border-radius:4px; overflow:hidden; margin-bottom:24px; }
+  .timer-fill{ height:100%; background:var(--teal); width:100%; transition:width 1s linear, background .3s ease; }
+  .timer-fill.warn{ background:var(--red); }
+  .question-text{ font-size:1.15rem; font-weight:800; margin-bottom:20px; line-height:1.45; }
+  .options{ display:grid; gap:10px; }
+  .option-btn{ padding:15px 16px; border-radius:10px; border:1px solid var(--border); background:var(--white); color:var(--text); font-size:0.98rem; text-align:left; cursor:pointer; font-family:inherit; transition:border-color .15s ease, background .15s ease; }
+  .option-btn:hover:not(:disabled){ border-color:var(--teal); background:var(--teal-tint); }
+  .option-btn:disabled{ cursor:default; }
+  .option-btn.correct{ background:var(--teal-tint); border-color:var(--teal); color:var(--teal-dark); font-weight:700; }
+  .option-btn.wrong{ background:var(--red-tint); border-color:var(--red); color:var(--red); font-weight:700; }
+  .next-row{ margin-top:22px; display:flex; justify-content:flex-end; }
+  .btn-solid{ padding:12px 26px; border-radius:8px; border:none; background:var(--teal); color:var(--white); font-size:0.95rem; font-weight:700; cursor:pointer; font-family:inherit; transition:background .15s ease; }
+  .btn-solid:hover:not(:disabled){ background:var(--teal-dark); }
+  .btn-solid:disabled{ opacity:0.35; cursor:not-allowed; }
+  .btn-outline{ padding:12px 26px; border-radius:8px; border:1px solid var(--text); background:transparent; color:var(--text); font-size:0.9rem; font-weight:700; cursor:pointer; font-family:inherit; }
+  .btn-outline:hover{ background:var(--white); }
+  .result-box{ padding:36px 26px; text-align:center; }
+  .result-score{ font-size:3rem; font-weight:800; margin:16px 0 8px; color:var(--teal); }
+  .result-sub{ color:var(--muted); font-size:0.95rem; margin-bottom:4px; }
+  .result-feedback{ color:var(--text); font-size:1rem; margin-bottom:28px; }
+  .result-actions{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+  .correct-toast{ position:fixed; top:20px; left:50%; transform:translateX(-50%) translateY(-20px); background:var(--teal); color:var(--white); padding:10px 24px; border-radius:30px; font-weight:700; font-size:0.95rem; opacity:0; transition:opacity .25s ease, transform .25s ease; z-index:50; box-shadow:0 6px 20px rgba(21,80,72,0.35); }
+  .correct-toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+  #confetti-canvas{ position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:40; }
+  .hidden{ display:none; }
+</style>
+</head>
+<body>
+<canvas id="confetti-canvas"></canvas>
+<div class="correct-toast" id="correct-toast">To'g'ri javob</div>
+
+<div class="wrap">
+  <header>
+    <div class="brand"><span class="mark">&lt;/&gt;</span> Dasturchi Yo'li</div>
+    <div class="menyu-pill">Testlar</div>
+  </header>
+
+  <main>
+    <div id="menu-screen">
+      <p class="eyebrow">Bilimingizni sinang</p>
+      <h1 class="page-title">Informatika testlari</h1>
+      <p class="subtitle">Darajangizga mos bosqichni tanlang va boshlang.</p>
+      <div class="card">
+        <button class="level-row" onclick="startQuiz('oson')">
+          <p class="eyebrow">Boshlang'ich</p>
+          <div class="level-title">Oson</div>
+          <div class="level-desc">Dasturlashning asosiy tushunchalari — endi o'rganayotganlar uchun. 50 ta savol.</div>
+          <span class="level-cta">Testni boshlash →</span>
+        </button>
+        <button class="level-row" onclick="startQuiz('ortacha')">
+          <p class="eyebrow">O'rta daraja</p>
+          <div class="level-title">O'rtacha</div>
+          <div class="level-desc">Algoritmlar, OOP va ma'lumotlar tuzilmalari — tajribasi bor dasturchilar uchun. 50 ta savol.</div>
+          <span class="level-cta">Testni boshlash →</span>
+        </button>
+        <button class="level-row" onclick="startQuiz('qiyin')">
+          <p class="eyebrow">Yuqori daraja</p>
+          <div class="level-title">Qiyin</div>
+          <div class="level-desc">Arxitektura, murakkablik nazariyasi va tizim dizayni — professional dasturchilar uchun. 50 ta savol.</div>
+          <span class="level-cta">Testni boshlash →</span>
+        </button>
+      </div>
+    </div>
+
+    <div id="quiz-screen" class="hidden">
+      <div class="card quiz-box">
+        <div class="top-row">
+          <button class="back-link" onclick="goToMenu()">← Ortga</button>
+          <div class="timer-pill" id="timer-badge">40</div>
+        </div>
+        <div class="status-pill" id="status-pill"></div>
+        <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+        <div class="timer-track"><div class="timer-fill" id="timer-fill"></div></div>
+        <div class="question-text" id="question-text"></div>
+        <div class="options" id="options-container"></div>
+        <div class="next-row">
+          <button class="btn-solid" id="next-btn" onclick="nextQuestion()" disabled>Keyingisi</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="result-screen" class="hidden">
+      <div class="card result-box">
+        <p class="eyebrow" id="result-level"></p>
+        <div class="result-score" id="result-score"></div>
+        <div class="result-feedback" id="result-feedback"></div>
+        <div class="result-actions">
+          <button class="btn-outline" onclick="goToMenu()">Bosqichlarga qaytish</button>
+          <button class="btn-solid" id="retry-btn">Qayta urinish</button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+const QUIZ_DATA = {
+  oson: {
+    title: "Oson",
+    questions: [
+      { q: "Kompyuterga buyruqlar berish uchun yoziladigan matn qanday nomlanadi?", options: ["Fayl","Dastur kodi","Rasm","Jadval"], correct: 1 },
+      { q: "Quyidagilardan qaysi biri son (raqam) hisoblanadi?", options: ["Salom","25","Kitob","Rost"], correct: 1 },
+      { q: "Ekranga matn yoki natija chiqarish uchun qanday buyruq ishlatiladi?", options: ["chiqarish / print","o'chirish / delete","saqlash / save","yopish / close"], correct: 0 },
+      { q: "Bir xil turdagi ko'p qiymatlarni birga saqlash uchun nima ishlatiladi?", options: ["Bitta o'zgaruvchi","Massiv (ro'yxat)","Rasm","Sarlavha"], correct: 1 },
+      { q: "Bir amalni bir necha marta takrorlash kerak bo'lsa, nima ishlatiladi?", options: ["Sikl (takrorlash)","Izoh","Fayl nomi","Sarlavha"], correct: 0 },
+      { q: "\"Agar yosh 18 dan katta bo'lsa...\" — bu qanday buyruqqa misol?", options: ["Sikl","Shart tekshirish (agar)","O'zgaruvchi e'lon qilish","Massiv"], correct: 1 },
+      { q: "Dasturda kodni tushuntirish uchun yoziladigan, dastur ishlashiga ta'sir qilmaydigan qator nima deyiladi?", options: ["Funksiya","Izoh (comment)","O'zgaruvchi","Massiv"], correct: 1 },
+      { q: "Kod bo'lagini nom bilan belgilab, keyin qayta-qayta chaqirish imkonini beruvchi tuzilma nima deyiladi?", options: ["Funksiya","Fayl","Massiv","Brauzer"], correct: 0 },
+      { q: "\"Ha\" yoki \"Yo'q\" (to'g'ri/noto'g'ri) qiymatini saqlaydigan ma'lumot turi qanday nomlanadi?", options: ["Matn (string)","Mantiqiy (boolean)","Son (integer)","Massiv"], correct: 1 },
+      { q: "Masalani yechish uchun ketma-ket bajariladigan qadamlar rejasi nima deyiladi?", options: ["Algoritm","Brauzer","Fayl","Server"], correct: 0 },
+      { q: "Dasturlash tili nima uchun kerak?", options: ["Rasm chizish uchun","Kompyuterga tushunarli buyruqlar yozish uchun","Musiqa yaratish uchun","Video ko'rish uchun"], correct: 1 },
+      { q: "Foydalanuvchidan ma'lumot qabul qilish uchun qanday buyruq ishlatiladi?", options: ["chiqarish / print","kiritish / input","o'chirish / delete","saqlash / save"], correct: 1 },
+      { q: "5 + 3 amali natijasi necha bo'ladi?", options: ["53","8","15","2"], correct: 1 },
+      { q: "Matn ma'lumotlar turi (masalan \"Salom\") qanday nomlanadi?", options: ["Integer","String (matn)","Boolean","Float"], correct: 1 },
+      { q: "Kasr sonlar (masalan 3.14) qaysi turga kiradi?", options: ["Integer","Float (kasr son)","String","Boolean"], correct: 1 },
+      { q: "Massivning birinchi elementi odatda qaysi indeksga ega bo'ladi?", options: ["1","0","-1","10"], correct: 1 },
+      { q: "`while` sikli qachon to'xtaydi?", options: ["Hech qachon to'xtamaydi","Shart yolg'on (false) bo'lganda","Dastur boshlanganda","Massiv bo'sh bo'lganda"], correct: 1 },
+      { q: "Ikki qiymatni solishtirish uchun qaysi belgi ishlatiladi?", options: ["=","==","+","%"], correct: 1 },
+      { q: "O'zgaruvchiga qiymat berish uchun qaysi belgi ishlatiladi?", options: ["==","=","!=",">"], correct: 1 },
+      { q: "10 ni 3 ga bo'lganda qolgan qoldiqni topish uchun qaysi amal ishlatiladi?", options: ["/","%","*","-"], correct: 1 },
+      { q: "Veb-sahifaning tuzilishini (skeletini) yaratish uchun qaysi til ishlatiladi?", options: ["CSS","HTML","Python","SQL"], correct: 1 },
+      { q: "Veb-sahifaning ko'rinishini (ranglar, shrift) bezash uchun qaysi til ishlatiladi?", options: ["HTML","CSS","SQL","Bash"], correct: 1 },
+      { q: "Internetdagi veb-sahifalarni ko'rish uchun ishlatiladigan dastur qanday nomlanadi?", options: ["Server","Brauzer","Kompilyator","Antivirus"], correct: 1 },
+      { q: "Kompyuterning \"miyasi\" hisoblanib, barcha hisob-kitoblarni bajaradigan qism nima deyiladi?", options: ["RAM","Protsessor (CPU)","Klaviatura","Monitor"], correct: 1 },
+      { q: "Dastur ishlayotganda vaqtinchalik ma'lumotlarni saqlaydigan xotira turi qanday nomlanadi?", options: ["RAM","Qattiq disk (HDD)","Protsessor","Klaviatura"], correct: 0 },
+      { q: "Kompyuter va foydalanuvchi orasidagi asosiy vositachi dastur (masalan Windows) nima deyiladi?", options: ["Brauzer","Operatsion tizim","Antivirus","Server"], correct: 1 },
+      { q: "Ma'lumotlarni tartibli saqlash va boshqarish uchun ishlatiladigan tizim nima deyiladi?", options: ["Ma'lumotlar bazasi","Brauzer","Protsessor","Fayl"], correct: 0 },
+      { q: "Fayllarni guruhlab saqlash uchun ishlatiladigan tuzilma nima deyiladi?", options: ["Fayl","Papka (jild)","Kod","Server"], correct: 1 },
+      { q: "Dasturdagi kutilmagan xato qanday nomlanadi?", options: ["Bug (xato)","Funksiya","Kompilyatsiya","Massiv"], correct: 0 },
+      { q: "Dasturdagi xatolarni topib tuzatish jarayoni nima deyiladi?", options: ["Debugging","Kompilyatsiya","Dizayn","Deploy"], correct: 0 },
+      { q: "Kodni versiyalarga bo'lib saqlash va o'zgarishlarni kuzatish uchun ishlatiladigan tizim nima deyiladi?", options: ["Git","Excel","Word","Photoshop"], correct: 0 },
+      { q: "Dastur yozish, tekshirish va ishga tushirish imkonini beruvchi maxsus dastur qanday nomlanadi?", options: ["IDE (dasturlash muhiti)","Brauzer","Antivirus","Player"], correct: 0 },
+      { q: "Python faylining odatiy kengaytmasi qaysi?", options: [".txt",".py",".html",".exe"], correct: 1 },
+      { q: "HTML faylining odatiy kengaytmasi qaysi?", options: [".py",".html",".css",".js"], correct: 1 },
+      { q: "Nusxa olish (copy) uchun qaysi klaviatura tugmalari birgalikda bosiladi?", options: ["Ctrl + V","Ctrl + C","Ctrl + Z","Ctrl + X"], correct: 1 },
+      { q: "Nusxani joylashtirish (paste) uchun qaysi klaviatura tugmalari birgalikda bosiladi?", options: ["Ctrl + C","Ctrl + V","Ctrl + S","Ctrl + P"], correct: 1 },
+      { q: "Faylni saqlash uchun odatda qaysi klaviatura yorlig'i ishlatiladi?", options: ["Ctrl + S","Ctrl + A","Ctrl + Z","Ctrl + N"], correct: 0 },
+      { q: "Dastur kodini kompyuter tushunadigan tilga aylantirish jarayoni nima deyiladi?", options: ["Dizayn","Kompilyatsiya","Test","Chop etish"], correct: 1 },
+      { q: "Bitta shartga qo'shimcha shartni tekshirish uchun `if`dan keyin nima ishlatiladi?", options: ["else","print","input","for"], correct: 0 },
+      { q: "Massivdagi elementlar sonini bilish uchun odatda nima ishlatiladi?", options: ["length / uzunlik","print","input","if"], correct: 0 },
+      { q: "Ikki son teng emasligini tekshirish uchun qaysi belgi ishlatiladi?", options: ["==","!=","=","%"], correct: 1 },
+      { q: "Sondan katta yoki teng ekanligini tekshirish uchun qaysi belgi ishlatiladi?", options: [">","<",">=","=="], correct: 2 },
+      { q: "\"va\" mantiqiy amalini bildiruvchi operator ko'pincha qanday nomlanadi?", options: ["AND","OR","NOT","XOR"], correct: 0 },
+      { q: "\"yoki\" mantiqiy amalini bildiruvchi operator ko'pincha qanday nomlanadi?", options: ["AND","OR","NOT","IF"], correct: 1 },
+      { q: "Dasturlashda ketma-ket bajariladigan buyruqlar to'plami umumiy holda nima deyiladi?", options: ["Kod / dastur","Rasm","Video","Fayl formati"], correct: 0 },
+      { q: "Foydalanuvchi kiritgan noto'g'ri ma'lumotni ushlab qolish uchun ishlatiladigan mexanizm nima deyiladi?", options: ["Xatolarni qayta ishlash (error handling)","Massiv","Sikl","Izoh"], correct: 0 },
+      { q: "Kompyuterda o'chirilganda ham saqlanib qoladigan ma'lumotlar qayerda saqlanadi?", options: ["RAM","Qattiq disk (HDD/SSD)","Protsessor","Ekran"], correct: 1 },
+      { q: "Bir nechta shartni ketma-ket tekshirish uchun `if`, `else`dan tashqari yana qaysi so'z ishlatiladi (ko'p tillarda)?", options: ["elif / else if","then","loop","end"], correct: 0 },
+      { q: "Massiv elementlarini sanashda \"0 dan boshlab sanash\" qoidasi qanday nomlanadi?", options: ["Nol-indeksli sanash","Bir-indeksli sanash","Teskari sanash","Tasodifiy sanash"], correct: 0 },
+      { q: "Ekranga \"Salom, Dunyo!\" deb chiqaradigan eng oddiy dastur ko'pincha nima deb ataladi?", options: ["Hello World dasturi","Xato dasturi","Test dasturi","Server dasturi"], correct: 0 }
+    ]
+  },
+  ortacha: {
+    title: "O'rtacha",
+    questions: [
+      { q: "Rekursiya (recursion) nima?", options: ["Sikl turi","Funksiyaning o'zini-o'zi chaqirishi","Massivni saralash usuli","Ma'lumotlar bazasi so'rovi"], correct: 1 },
+      { q: "OOPda \"inkapsulyatsiya\" nimani anglatadi?", options: ["Bir nechta klassdan meros olish","Ma'lumot va metodlarni birlashtirib, tashqi ta'sirdan himoyalash","Klassni boshqa klassga aylantirish","Kodni tezlashtirish"], correct: 1 },
+      { q: "Massivni saralashning o'rtacha holatda eng tez ishlaydigan algoritmi qaysi?", options: ["Bubble Sort","Quick Sort","Selection Sort","Linear Search"], correct: 1 },
+      { q: "SQLda `JOIN` operatori nima uchun ishlatiladi?", options: ["Jadvalni o'chirish uchun","Ikki yoki undan ortiq jadvalni bog'lash uchun","Yangi baza yaratish uchun","Ustunni o'chirish uchun"], correct: 1 },
+      { q: "\"Stack\" va \"Queue\" tuzilmalari orasidagi asosiy farq nima?", options: ["Ikkalasi ham bir xil ishlaydi","Stack — LIFO, Queue — FIFO","Stack faqat sonlarni saqlaydi","Queue faqat matnlarni saqlaydi"], correct: 1 },
+      { q: "Meros olish (inheritance) OOPda nimaga xizmat qiladi?", options: ["Xotirani tozalashga","Bir klassning xususiyat va metodlarini boshqa klassga o'tkazishga","Dasturni sekinlashtirishga","Faylni o'qishga"], correct: 1 },
+      { q: "API nima uchun ishlatiladi?", options: ["Faqat dizayn yaratish uchun","Turli dasturlar/tizimlar orasida ma'lumot almashish uchun","Faqat ma'lumotlar bazasini o'chirish uchun","Kompyuterni yoqish uchun"], correct: 1 },
+      { q: "Git'da `commit` nima ishni bajaradi?", options: ["Loyihani internetga yuklaydi","O'zgarishlarni lokal repozitoriyga saqlaydi","Faylni butunlay o'chiradi","Yangi til o'rnatadi"], correct: 1 },
+      { q: "Big O notatsiyasida `O(n log n)` odatda qaysi algoritm turiga xos?", options: ["Chiziqli qidiruv","Yaxshi saralash algoritmlari (masalan, Merge Sort)","Doimiy vaqtli operatsiyalar","Ikki o'lchamli massiv yaratish"], correct: 1 },
+      { q: "\"Exception handling\" (try/catch) nima uchun kerak?", options: ["Dasturni tezlashtirish uchun","Kutilmagan xatoliklarni boshqarish va dastur ishlashini to'xtatmaslik uchun","Yangi o'zgaruvchi yaratish uchun","Massivni saralash uchun"], correct: 1 },
+      { q: "Polimorfizm (polymorphism) OOPda nimani anglatadi?", options: ["Bir xil metod turli klasslarda turlicha ishlashi","Klassni yashirish","Ma'lumotni o'chirish","Xotirani tozalash"], correct: 0 },
+      { q: "Abstraksiya OOP tamoyili sifatida nimani anglatadi?", options: ["Ortiqcha detallarni yashirib, faqat kerakli qismni ko'rsatish","Klassni nusxalash","Xotirani bo'shatish","Kodni tezlashtirish"], correct: 0 },
+      { q: "Linked list (bog'langan ro'yxat) massivdan asosiy farqi nimada?", options: ["Elementlar xotirada ketma-ket joylashmaydi va ko'rsatkichlar orqali bog'lanadi","Faqat sonlarni saqlaydi","Doim tezroq ishlaydi","O'lchami o'zgarmaydi"], correct: 0 },
+      { q: "Hash jadval (hash table) asosan nima uchun ishlatiladi?", options: ["Ma'lumotni tez qidirish uchun (kalit-qiymat)","Rasmlarni saqlash uchun","Videoni siqish uchun","Tarmoqni sozlash uchun"], correct: 0 },
+      { q: "Binary Tree (ikkilik daraxt)da har bir tugun maksimal nechta bolaga ega bo'ladi?", options: ["1","2","3","Cheklanmagan"], correct: 1 },
+      { q: "SQLda `WHERE` operatori nima uchun ishlatiladi?", options: ["Natijalarni filtrlash uchun","Jadval yaratish uchun","Ustun qo'shish uchun","Bazani o'chirish uchun"], correct: 0 },
+      { q: "Normalizatsiya (ma'lumotlar bazasida) nima maqsadda qilinadi?", options: ["Ma'lumotlar takrorlanishini kamaytirish uchun","Bazani tezroq o'chirish uchun","Parolni shifrlash uchun","Serverni tezlashtirish uchun"], correct: 0 },
+      { q: "REST API'da GET so'rovi odatda nima uchun ishlatiladi?", options: ["Ma'lumot olish uchun","Ma'lumotni o'chirish uchun","Yangi ma'lumot yaratish uchun","Serverni o'chirish uchun"], correct: 0 },
+      { q: "HTTP statusidagi 404 kodi nimani bildiradi?", options: ["Muvaffaqiyatli so'rov","Sahifa topilmadi","Server xatosi","Ruxsat yo'q"], correct: 1 },
+      { q: "Git'da `branch` (shoxcha) nima uchun ishlatiladi?", options: ["Kodning alohida yo'nalishda mustaqil rivojlanishi uchun","Faylni o'chirish uchun","Xatoni topish uchun","Serverga ulanish uchun"], correct: 0 },
+      { q: "Git'da `merge` nima qiladi?", options: ["Ikki shoxchani birlashtiradi","Faylni o'chiradi","Yangi repo yaratadi","Kodni kompilyatsiya qiladi"], correct: 0 },
+      { q: "Unit test (birlik test) nima maqsadda yoziladi?", options: ["Kodning kichik bir qismini alohida tekshirish uchun","Butun dasturni o'chirish uchun","Serverni sozlash uchun","Dizaynni chizish uchun"], correct: 0 },
+      { q: "\"DRY\" (Don't Repeat Yourself) tamoyili nimani anglatadi?", options: ["Kodni takrorlamaslik","Testlarni yozmaslik","Izoh qoldirmaslik","Funksiyalardan foydalanmaslik"], correct: 0 },
+      { q: "Asinxron (asynchronous) dasturlash nima uchun ishlatiladi?", options: ["Uzoq davom etadigan amallarni dastur ishlashini to'xtatmasdan bajarish uchun","Kodni qisqartirish uchun","Xatolarni yashirish uchun","Massivni saralash uchun"], correct: 0 },
+      { q: "JSON format asosan nima uchun ishlatiladi?", options: ["Ma'lumotlarni almashish va saqlash uchun","Rasm chizish uchun","Video kodlash uchun","Parolni shifrlash uchun"], correct: 0 },
+      { q: "Interfeys (interface) OOPda nima vazifani bajaradi?", options: ["Klass qanday metodlarga ega bo'lishi kerakligini belgilaydi","Xotirani tozalaydi","Faylni o'chiradi","Bazani yaratadi"], correct: 0 },
+      { q: "Konstruktor (constructor) OOPda nima uchun ishlatiladi?", options: ["Obyekt yaratilganda uni boshlang'ich holatga keltirish uchun","Obyektni o'chirish uchun","Klassni yashirish uchun","Testlash uchun"], correct: 0 },
+      { q: "Middleware veb-ilovalarda odatda nima uchun ishlatiladi?", options: ["So'rov va javob orasida qo'shimcha ishlov berish uchun","Ma'lumotlar bazasini yaratish uchun","Dizayn chizish uchun","Faylni siqish uchun"], correct: 0 },
+      { q: "Load balancing (yuklamani taqsimlash) nima uchun kerak?", options: ["Trafikni bir nechta serverga taqsimlab tizim barqarorligini oshirish uchun","Kodni qisqartirish uchun","Bazani o'chirish uchun","Faylni siqish uchun"], correct: 0 },
+      { q: "Caching (keshlash) nima maqsadda ishlatiladi?", options: ["Tez-tez so'raladigan ma'lumotni tezroq qaytarish uchun saqlab qo'yish","Ma'lumotni butunlay o'chirish uchun","Kodni murakkablashtirish uchun","Xatoni yashirish uchun"], correct: 0 },
+      { q: "Regular expression (RegEx) nima uchun ishlatiladi?", options: ["Matnda naqshlarni qidirish va mos kelishini tekshirish uchun","Rasmni tahrirlash uchun","Videoni siqish uchun","Bazani yaratish uchun"], correct: 0 },
+      { q: "Version control tizimida \"conflict\" (ziddiyat) qachon yuzaga keladi?", options: ["Bir xil qatorga ikki xil o'zgarish kiritilganda birlashtirishda","Fayl o'chirilganda","Server ishdan chiqqanda","Test muvaffaqiyatsiz bo'lganda"], correct: 0 },
+      { q: "Ma'lumotlar bazasida \"primary key\" (asosiy kalit) nima vazifani bajaradi?", options: ["Har bir yozuvni yagona aniqlaydi","Jadvalni o'chiradi","Ustunni yashiradi","Bazani nusxalaydi"], correct: 0 },
+      { q: "\"Foreign key\" (tashqi kalit) ma'lumotlar bazasida nima uchun ishlatiladi?", options: ["Ikki jadval orasida bog'lanish o'rnatish uchun","Jadvalni o'chirish uchun","Ustunni yashirish uchun","Parolni shifrlash uchun"], correct: 0 },
+      { q: "Sikl ichida \"break\" operatori nima qiladi?", options: ["Siklni darhol to'xtatadi","Siklni qayta boshlaydi","Dastur ishini to'xtatadi","Massivni tozalaydi"], correct: 0 },
+      { q: "Sikl ichida \"continue\" operatori nima qiladi?", options: ["Joriy iteratsiyani o'tkazib, keyingisiga o'tadi","Siklni butunlay to'xtatadi","Dastur ishini to'xtatadi","Massivni o'chiradi"], correct: 0 },
+      { q: "\"Immutable\" (o'zgarmas) obyekt nimani anglatadi?", options: ["Yaratilgandan keyin qiymati o'zgartirib bo'lmaydigan obyekt","Har doim o'zgarib turadigan obyekt","Faqat sonlardan iborat obyekt","Xotirasiz obyekt"], correct: 0 },
+      { q: "Multithreading (ko'p oqimli dasturlash) nima uchun ishlatiladi?", options: ["Bir nechta vazifani parallel bajarish uchun","Kodni qisqartirish uchun","Faylni siqish uchun","Bazani yaratish uchun"], correct: 0 },
+      { q: "\"Race condition\" nima uchun yuzaga keladi?", options: ["Bir nechta oqim bir xil ma'lumotga bir vaqtda kirishga urinishida","Internet uzilganda","Fayl o'chirilganda","Server qayta ishga tushganda"], correct: 0 },
+      { q: "Web-sahifada \"cookie\" nima uchun ishlatiladi?", options: ["Foydalanuvchi haqida ma'lumotni brauzerda saqlash uchun","Sahifani bezash uchun","Rasmni siqish uchun","Serverni o'chirish uchun"], correct: 0 },
+      { q: "\"Cross-Origin Resource Sharing\" (CORS) nima uchun kerak?", options: ["Turli domenlar orasida resurslarni xavfsiz almashishni boshqarish uchun","Faylni siqish uchun","Bazani yaratish uchun","Parolni saqlash uchun"], correct: 0 },
+      { q: "Ma'lumotlar bazasida \"index\" (indeks) nima uchun yaratiladi?", options: ["Qidiruvni tezlashtirish uchun","Ma'lumotni o'chirish uchun","Jadvalni yashirish uchun","Parolni shifrlash uchun"], correct: 0 },
+      { q: "\"Lazy loading\" nima uchun ishlatiladi?", options: ["Kerak bo'lgandagina ma'lumot yoki resursni yuklash uchun","Hamma narsani darhol yuklash uchun","Faylni o'chirish uchun","Testlarni o'tkazib yuborish uchun"], correct: 0 },
+      { q: "MVC (Model-View-Controller) arxitekturasida \"Model\" nimaga javob beradi?", options: ["Ma'lumot va biznes-mantiq uchun","Foydalanuvchi interfeysi uchun","So'rovlarni qabul qilish uchun","Faylni saqlash uchun"], correct: 0 },
+      { q: "Testlashda \"mock\" obyekt nima maqsadda ishlatiladi?", options: ["Haqiqiy obyekt o'rniga soxta obyekt yaratib, testni izolyatsiya qilish uchun","Bazani o'chirish uchun","Kodni tezlashtirish uchun","Dizaynni chizish uchun"], correct: 0 },
+      { q: "\"Idempotent\" HTTP so'rovi nimani anglatadi?", options: ["Bir necha marta yuborilsa ham natija bir xil bo'lishi","Har safar boshqa natija berishi","Faqat bir marta ishlashi","Hech qachon ishlamasligi"], correct: 0 },
+      { q: "Semantik versiyalashda (masalan 2.1.0) birinchi raqam odatda nimani bildiradi?", options: ["Katta (breaking) o'zgarishlar","Kichik tuzatishlar","Fayl hajmi","Test soni"], correct: 0 },
+      { q: "\"Singleton\" dizayn patterni nimani ta'minlaydi?", options: ["Klassdan faqat bitta obyekt yaratilishini","Klassdan cheksiz obyekt yaratilishini","Klassni yashirishni","Xotirani tozalashni"], correct: 0 },
+      { q: "Ma'lumotlar bazasida \"transaction\" (tranzaksiya) nima uchun ishlatiladi?", options: ["Bir nechta amalni yaxlit va xavfsiz bajarish uchun","Jadvalni o'chirish uchun","Parolni shifrlash uchun","Faylni siqish uchun"], correct: 0 },
+      { q: "\"Scalability\" (masshtablanuvchanlik) tizim uchun nimani anglatadi?", options: ["Yuklama oshganda tizimning shunga mos o'sish qobiliyati","Tizimning tezligini pasaytirish","Kod hajmini kamaytirish","Xatolarni yashirish"], correct: 0 }
+    ]
+  },
+  qiyin: {
+    title: "Qiyin",
+    questions: [
+      { q: "Binary Search algoritmining vaqt murakkabligi qanday?", options: ["O(n)","O(log n)","O(n²)","O(1)"], correct: 1 },
+      { q: "CAP teoremasiga ko'ra, taqsimlangan tizim bir vaqtning o'zida qaysi uchtadan faqat ikkitasini ta'minlay oladi?", options: ["Speed, Cost, Accuracy","Consistency, Availability, Partition tolerance","Security, Scalability, Simplicity","Memory, CPU, Network"], correct: 1 },
+      { q: "Deadlock yuzaga kelishi uchun quyidagi shartlardan qaysi biri SHART EMAS?", options: ["Mutual exclusion","Hold and wait","Preemption (resursni majburan olib qo'yish)","Circular wait"], correct: 2 },
+      { q: "Dependency Injection dizayn patternining asosiy maqsadi nima?", options: ["Kodni sekinlashtirish","Klasslar orasidagi bog'liqlikni kamaytirib, moslashuvchanlikni oshirish","Xotirani ko'proq sarflash","Faqat testlash imkonsiz qilish"], correct: 1 },
+      { q: "B-daraxt (B-tree) ma'lumotlar bazalarida ko'pincha nima uchun ishlatiladi?", options: ["Faqat matnni shifrlash uchun","Diskda indekslashni tezlashtirish uchun","Tarmoq xavfsizligini ta'minlash uchun","Videoni siqish uchun"], correct: 1 },
+      { q: "TCP va UDP protokollari orasidagi asosiy farq nima?", options: ["Ikkalasi ham xatoni tuzatmaydi","TCP ulanishga asoslangan va yetkazishni kafolatlaydi, UDP esa tezroq lekin kafolatsiz","UDP faqat elektron pochta uchun ishlatiladi","TCP faqat video oqim uchun ishlatiladi"], correct: 1 },
+      { q: "Garbage Collection dasturlash tillarida nima vazifani bajaradi?", options: ["Kodni tezroq kompilyatsiya qiladi","Ishlatilmay qolgan xotirani avtomatik tozalaydi","Fayllarni internetga yuklaydi","Dasturni shifrlaydi"], correct: 1 },
+      { q: "Amortizatsiyalangan (amortized) vaqt murakkabligi nimani anglatadi?", options: ["Har doim eng yomon holatdagi vaqt","Ko'p amallar ketma-ketligida o'rtacha hisoblangan vaqt murakkabligi","Faqat bitta amalning vaqti","Xotira sarfini o'lchash usuli"], correct: 1 },
+      { q: "Mikroservis arxitekturasining monolit arxitekturadan asosiy afzalligi nima?", options: ["Har doim tezroq ishlaydi","Xizmatlarni mustaqil ishlab chiqish, joylashtirish va masshtablash imkoniyati","Kodni bitta faylga jamlaydi","Ma'lumotlar bazasini talab qilmaydi"], correct: 1 },
+      { q: "SOLID prinsiplaridagi \"S\" (Single Responsibility Principle) nimani anglatadi?", options: ["Bitta dastur faqat bitta tilda yozilishi kerak","Har bir klass faqat bitta vazifaga (o'zgarish sababiga) ega bo'lishi kerak","Bitta loyihada bitta dasturchi ishlashi kerak","Klasslar faqat bitta metodga ega bo'lishi kerak"], correct: 1 },
+      { q: "NP-to'liq (NP-complete) masala nimani anglatadi?", options: ["Yechimni tekshirish oson, lekin topish uchun ma'lum tez algoritm yo'q deb hisoblangan masala","Har doim chiziqli vaqtda yechiladigan masala","Yechimi umuman bo'lmagan masala","Faqat kvant kompyuterlarda yechiladigan masala"], correct: 0 },
+      { q: "Dinamik dasturlash (dynamic programming) usuli asosan nimaga tayanadi?", options: ["Masalani kichik pastki masalalarga bo'lib, natijalarni saqlab qayta ishlatishga","Tasodifiy yechim tanlashga","Faqat rekursiyaga, natijani saqlamasdan","Faqat massivlarni saralashga"], correct: 0 },
+      { q: "\"Greedy algorithm\" (ochko'z algoritm) qanday yondashuvga asoslanadi?", options: ["Har qadamda mahalliy eng yaxshi tanlovni qilishga","Barcha variantlarni sinab ko'rishga","Tasodifiy tanlashga","Faqat rekursiyaga"], correct: 0 },
+      { q: "Load balancer'dagi \"round robin\" algoritmi qanday ishlaydi?", options: ["So'rovlarni serverlar orasida ketma-ket, navbat bilan taqsimlaydi","Faqat bitta serverga yuboradi","Eng band serverga yuboradi","Tasodifiy tanlaydi"], correct: 0 },
+      { q: "\"Eventual consistency\" taqsimlangan tizimlarda nimani anglatadi?", options: ["Vaqt o'tishi bilan barcha nusxalar bir xil holatga kelishi kafolatlanadi, lekin darhol emas","Ma'lumot hech qachon sinxronlashmaydi","Har doim darhol bir xil bo'ladi","Faqat bitta serverda ishlaydi"], correct: 0 },
+      { q: "\"Two-phase commit\" protokoli nima uchun ishlatiladi?", options: ["Taqsimlangan tranzaksiyani barcha tugunlarda izchil yakunlash uchun","Faylni siqish uchun","Parolni shifrlash uchun","Kodni test qilish uchun"], correct: 0 },
+      { q: "\"Consistent hashing\" qaysi muammoni yechishga yordam beradi?", options: ["Tugunlar soni o'zgarganda ma'lumotlarni qayta taqsimlashni minimallashtirish","Parolni shifrlashni tezlashtirish","Kodni qisqartirish","Testlarni avtomatlashtirish"], correct: 0 },
+      { q: "Operatsion tizimda \"virtual xotira\" nima maqsadda ishlatiladi?", options: ["Dasturlarga jismoniy xotiradan kattaroq xotira mavjuddek ko'rsatish","Protsessor tezligini oshirish","Diskni tezlashtirish","Tarmoqni sozlash"], correct: 0 },
+      { q: "\"Context switching\" protsessorda nimani anglatadi?", options: ["Bir jarayondan boshqasiga o'tishda holatni saqlab, almashtirish","Dasturni butunlay to'xtatish","Xotirani tozalash","Diskni formatlash"], correct: 0 },
+      { q: "TCP'dagi \"three-way handshake\" nechta bosqichdan iborat va nima uchun kerak?", options: ["3 bosqich — ishonchli ulanish o'rnatish uchun","2 bosqich — faylni yuklash uchun","4 bosqich — parolni tekshirish uchun","1 bosqich — ma'lumot yuborish uchun"], correct: 0 },
+      { q: "HTTPS'da TLS protokoli asosan nimani ta'minlaydi?", options: ["Ma'lumot almashinuvining shifrlanishi va xavfsizligi","Sahifa tezligini oshirish","Rasm sifatini yaxshilash","Domen nomini almashtirish"], correct: 0 },
+      { q: "SQL in'yeksiyasi (SQL injection) hujumidan himoyalanishning eng ishonchli usuli qaysi?", options: ["Parametrlashtirilgan so'rovlar (prepared statements) ishlatish","Parolni uzunroq qilish","Serverni qayta ishga tushirish","Faylni siqish"], correct: 0 },
+      { q: "\"Zero-day\" zaifligi nima?", options: ["Ishlab chiquvchi hali bilmagan va tuzatilmagan xavfsizlik kamchiligi","Bir kunlik bepul sinov","Serverning bir kunlik ishlamay qolishi","Eski, allaqachon yopilgan zaiflik"], correct: 0 },
+      { q: "CDN (Content Delivery Network) nima uchun ishlatiladi?", options: ["Kontentni foydalanuvchiga geografik yaqin serverlardan tezroq yetkazish uchun","Ma'lumotlar bazasini shifrlash uchun","Kodni kompilyatsiya qilish uchun","Parolni saqlash uchun"], correct: 0 },
+      { q: "Circuit breaker patterni tizimlarda nima uchun ishlatiladi?", options: ["Ishlamayotgan xizmatga qayta-qayta murojaat qilib, tizimni yanada yomonlashtirmaslik uchun","Kodni qisqartirish uchun","Bazani tezlashtirish uchun","Parolni shifrlash uchun"], correct: 0 },
+      { q: "\"Event sourcing\" arxitektura yondashuvida ma'lumotlar qanday saqlanadi?", options: ["Holatning o'zi emas, unga olib kelgan barcha hodisalar ketma-ketligi saqlanadi","Faqat oxirgi holat saqlanadi","Hech narsa saqlanmaydi","Faqat foydalanuvchi ismi saqlanadi"], correct: 0 },
+      { q: "CQRS (Command Query Responsibility Segregation) pattern nimani ajratadi?", options: ["Ma'lumotni o'zgartirish (write) va o'qish (read) amallarini alohida modellarga ajratadi","Frontend va backendni ajratadi","Fayllarni papkalarga ajratadi","Foydalanuvchilarni guruhlarga ajratadi"], correct: 0 },
+      { q: "Xotirada \"memory leak\" (xotira sizishi) nima sababdan yuzaga keladi?", options: ["Endi kerak bo'lmagan xotira to'g'ri bo'shatilmasdan qolib ketishi","Protsessor tezligi pastligi","Internet aloqasi yo'qligi","Diskning to'lib qolishi"], correct: 0 },
+      { q: "\"Byzantine fault tolerance\" taqsimlangan tizimlarda nimani anglatadi?", options: ["Ba'zi tugunlar noto'g'ri yoki yolg'on ma'lumot yuborsa ham tizim to'g'ri ishlashi","Barcha tugunlar har doim to'g'ri ishlaydi deb hisoblash","Faqat bitta tugun ishlatilishi","Tarmoqning umuman bo'lmasligi"], correct: 0 },
+      { q: "\"Sharding\" ma'lumotlar bazasi kontekstida nimani anglatadi?", options: ["Katta ma'lumotlar bazasini kichikroq qismlarga bo'lib, turli serverlarga taqsimlash","Ma'lumotlarni butunlay o'chirish","Bazani zaxiralash","Parolni shifrlash"], correct: 0 },
+      { q: "\"Optimistic locking\" ma'lumotlar bazasida qanday ishlaydi?", options: ["O'zgarish yozilishidan oldin versiyani tekshirib, ziddiyat bo'lsa rad etadi","Har doim yozuvni bloklab qo'yadi","Hech qachon tekshirmaydi","Faqat o'qishga ruxsat beradi"], correct: 0 },
+      { q: "Kompilyator ishlab chiqarishdagi \"lexical analysis\" (leksik tahlil) bosqichi nima qiladi?", options: ["Manba kodni tokenlarga (so'z birliklariga) ajratadi","Kodni ishga tushiradi","Xotirani tozalaydi","Faylni saqlaydi"], correct: 0 },
+      { q: "\"Tail call optimization\" nima maqsadda qo'llaniladi?", options: ["Rekursiv chaqiruvlarda qo'shimcha stek xotirasi sarflanishini oldini olish uchun","Kodni sekinlashtirish uchun","Xotirani ko'proq band qilish uchun","Faylni siqish uchun"], correct: 0 },
+      { q: "\"Memoization\" texnikasi nimaga asoslanadi?", options: ["Funksiya natijalarini keshlab, bir xil kirish uchun qayta hisoblamaslikka","Har safar qayta hisoblashga","Xotirani tozalashga","Kodni murakkablashtirishga"], correct: 0 },
+      { q: "Operatsion tizimlardagi \"thrashing\" holati nimani anglatadi?", options: ["Tizim ko'p vaqtni sahifalarni almashtirishga sarflab, foydali ish deyarli bajarmasligi","Protsessorning tez ishlashi","Diskning to'liq bo'sh bo'lishi","Tarmoqning tezligi oshishi"], correct: 0 },
+      { q: "\"Publish-subscribe\" arxitekturasi nima uchun ishlatiladi?", options: ["Komponentlarni bir-biridan bog'liqsiz holda xabar almashishga imkon berish uchun","Ma'lumotlar bazasini yaratish uchun","Faylni siqish uchun","Parolni saqlash uchun"], correct: 0 },
+      { q: "\"Vertical scaling\" va \"horizontal scaling\" orasidagi farq nima?", options: ["Vertical — bitta serverning quvvatini oshirish, horizontal — ko'proq server qo'shish","Ikkalasi ham bir xil","Vertical — server sonini oshirish","Horizontal — faqat xotirani oshirish"], correct: 0 },
+      { q: "\"Idempotency key\" API'larda nima uchun ishlatiladi?", options: ["Bir xil so'rov qayta yuborilganda amalning takror bajarilmasligini ta'minlash uchun","So'rovni tezlashtirish uchun","Parolni shifrlash uchun","Faylni siqish uchun"], correct: 0 },
+      { q: "Statik va dinamik tiplashtirilgan tillar orasidagi asosiy farq nima?", options: ["Statikda tur kompilyatsiya vaqtida, dinamikda ishga tushirish vaqtida aniqlanadi","Ikkalasida ham farq yo'q","Dinamik tillar har doim tezroq ishlaydi","Statik tillar tur tekshiruvini umuman qilmaydi"], correct: 0 },
+      { q: "\"Race condition\"ni oldini olishning keng tarqalgan usullaridan biri qaysi?", options: ["Mutex/lock (qulflash) mexanizmlaridan foydalanish","Kodni qisqartirish","Testlarni o'chirish","Serverni qayta ishga tushirish"], correct: 0 },
+      { q: "\"Observer\" dizayn patterni nimaga asoslanadi?", options: ["Bir obyekt holati o'zgarganda unga bog'langan boshqa obyektlar avtomatik xabardor qilinishiga","Faqat bitta obyekt yaratilishiga","Obyektlarni yashirishga","Xotirani tozalashga"], correct: 0 },
+      { q: "Reaktiv dasturlash (reactive programming) asosan nimaga qaratilgan?", options: ["Ma'lumotlar oqimi va o'zgarishlarni tarqatishga asoslangan dasturlash","Faqat statik veb-sahifalar yaratishga","Ma'lumotlar bazasini loyihalashga","Tarmoq protokollarini yozishga"], correct: 0 },
+      { q: "\"Domain-Driven Design\" (DDD) yondashuvi nimaga urg'u beradi?", options: ["Dastur tuzilishini biznes sohasi (domen) mantig'iga mos qurishga","Faqat foydalanuvchi interfeysiga","Faqat ma'lumotlar bazasi tezligiga","Faqat test yozishga"], correct: 0 },
+      { q: "\"Backpressure\" oqim (streaming) tizimlarida nima muammoni bildiradi?", options: ["Ma'lumot ishlab chiqaruvchi iste'molchidan tezroq ishlab chiqarganda yuzaga keladigan haddan tashqari yuklama","Tarmoqning butunlay uzilishi","Diskning to'lib qolishi","Parolning noto'g'ri bo'lishi"], correct: 0 },
+      { q: "Raft yoki Paxos kabi konsensus algoritmlari asosan nima uchun ishlatiladi?", options: ["Taqsimlangan tizimda tugunlar orasida umumiy qarorga erishish uchun","Faylni siqish uchun","Parolni shifrlash uchun","Kodni test qilish uchun"], correct: 0 },
+      { q: "\"Strangler fig\" migratsiya patterni nima uchun ishlatiladi?", options: ["Eski monolit tizimni asta-sekin, qism-qism yangi tizimga almashtirish uchun","Ma'lumotlar bazasini o'chirish uchun","Kodni tezlashtirish uchun","Testlarni yozish uchun"], correct: 0 },
+      { q: "\"Chaos engineering\" amaliyoti nima maqsadda qo'llaniladi?", options: ["Tizimga qasddan nosozliklar kiritib, uning chidamliligini sinash uchun","Kodni yashirish uchun","Foydalanuvchilarni chalg'itish uchun","Bazani tezlashtirish uchun"], correct: 0 },
+      { q: "\"Circular dependency\" (aylanma bog'liqlik) dasturiy ta'minotda nima muammo tug'diradi?", options: ["Modullar bir-biriga bog'liq bo'lib qolib, alohida yuklash yoki testlashni qiyinlashtiradi","Dasturni tezlashtiradi","Xotirani bo'shatadi","Hech qanday muammo tug'dirmaydi"], correct: 0 },
+      { q: "Funksional dasturlashdagi \"pure function\" (sof funksiya) nimani anglatadi?", options: ["Bir xil kirish uchun har doim bir xil natija beradigan va tashqi holatga ta'sir qilmaydigan funksiya","Har safar boshqa natija beradigan funksiya","Faqat sonlar bilan ishlaydigan funksiya","Xotirani ko'p ishlatadigan funksiya"], correct: 0 },
+      { q: "\"Technical debt\" (texnik qarz) tushunchasi nimani anglatadi?", options: ["Tezroq yechim uchun sifatdan kelishib, kelajakda qo'shimcha ish talab qiladigan holat","Kompaniyaning moliyaviy qarzi","Serverga to'lanadigan haq","Dasturchining ish haqi"], correct: 0 }
+    ]
+  }
+};
+
+const TIME_LIMIT = 40;
+let currentLevel = null;
+let currentIndex = 0;
+let score = 0;
+let answered = false;
+let timerInterval = null;
+let timeLeft = TIME_LIMIT;
+
+const menuScreen = document.getElementById('menu-screen');
+const quizScreen = document.getElementById('quiz-screen');
+const resultScreen = document.getElementById('result-screen');
+const statusPill = document.getElementById('status-pill');
+const progressFill = document.getElementById('progress-fill');
+const timerFill = document.getElementById('timer-fill');
+const timerBadge = document.getElementById('timer-badge');
+const questionText = document.getElementById('question-text');
+const optionsContainer = document.getElementById('options-container');
+const nextBtn = document.getElementById('next-btn');
+const correctToast = document.getElementById('correct-toast');
+
+function startQuiz(level){
+  currentLevel = level;
+  currentIndex = 0;
+  score = 0;
+  menuScreen.classList.add('hidden');
+  resultScreen.classList.add('hidden');
+  quizScreen.classList.remove('hidden');
+  renderQuestion();
+}
+
+function renderQuestion(){
+  answered = false;
+  nextBtn.disabled = true;
+  const data = QUIZ_DATA[currentLevel];
+  const q = data.questions[currentIndex];
+  statusPill.textContent = `${data.title} · ${score} ball · ${currentIndex + 1}/${data.questions.length} savol`;
+  progressFill.style.width = `${((currentIndex) / data.questions.length) * 100}%`;
+  questionText.textContent = q.q;
+  optionsContainer.innerHTML = '';
+
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.textContent = opt;
+    btn.onclick = () => selectAnswer(i);
+    optionsContainer.appendChild(btn);
+  });
+
+  nextBtn.textContent = (currentIndex === data.questions.length - 1) ? "Yakunlash" : "Keyingisi";
+  startTimer();
+}
+
+function startTimer(){
+  clearInterval(timerInterval);
+  timeLeft = TIME_LIMIT;
+  updateTimerUI();
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    updateTimerUI();
+    if(timeLeft <= 0){
+      clearInterval(timerInterval);
+      handleTimeout();
+    }
+  }, 1000);
+}
+
+function updateTimerUI(){
+  timerBadge.textContent = timeLeft;
+  const pct = (timeLeft / TIME_LIMIT) * 100;
+  timerFill.style.width = `${pct}%`;
+  const isWarn = timeLeft <= 10;
+  timerBadge.classList.toggle('warn', isWarn);
+  timerFill.classList.toggle('warn', isWarn);
+}
+
+function handleTimeout(){
+  if(answered) return;
+  answered = true;
+  const data = QUIZ_DATA[currentLevel];
+  const q = data.questions[currentIndex];
+  const buttons = optionsContainer.querySelectorAll('.option-btn');
+  buttons.forEach((btn, i) => {
+    btn.disabled = true;
+    if(i === q.correct) btn.classList.add('correct');
+  });
+  setTimeout(() => { advance(); }, 1200);
+}
+
+function selectAnswer(selectedIndex){
+  if(answered) return;
+  answered = true;
+  clearInterval(timerInterval);
+  const data = QUIZ_DATA[currentLevel];
+  const q = data.questions[currentIndex];
+  const buttons = optionsContainer.querySelectorAll('.option-btn');
+
+  buttons.forEach((btn, i) => {
+    btn.disabled = true;
+    if(i === q.correct){
+      btn.classList.add('correct');
+    }
+    if(i === selectedIndex && selectedIndex !== q.correct){
+      btn.classList.add('wrong');
+    }
+  });
+
+  if(selectedIndex === q.correct){
+    score++;
+    showCorrectFeedback();
+  }
+
+  nextBtn.disabled = false;
+}
+
+function showCorrectFeedback(){
+  correctToast.classList.add('show');
+  fireConfetti();
+  setTimeout(() => { correctToast.classList.remove('show'); }, 1400);
+}
+
+function nextQuestion(){ advance(); }
+
+function advance(){
+  clearInterval(timerInterval);
+  const data = QUIZ_DATA[currentLevel];
+  if(currentIndex < data.questions.length - 1){
+    currentIndex++;
+    renderQuestion();
+  } else {
+    progressFill.style.width = '100%';
+    showResult();
+  }
+}
+
+function showResult(){
+  quizScreen.classList.add('hidden');
+  resultScreen.classList.remove('hidden');
+  const data = QUIZ_DATA[currentLevel];
+  const total = data.questions.length;
+  const percent = Math.round((score / total) * 100);
+
+  document.getElementById('result-level').textContent = `${data.title} bosqichi natijasi`;
+  document.getElementById('result-score').textContent = `${score} / ${total}`;
+
+  let feedback = '';
+  if(percent === 100) feedback = "Barcha savollarga to'g'ri javob berdingiz.";
+  else if(percent >= 80) feedback = "Juda yaxshi natija.";
+  else if(percent >= 50) feedback = "Yaxshi natija, davom eting.";
+  else feedback = "Mavzuni yana bir bor takrorlab, qayta urinib ko'ring.";
+  document.getElementById('result-feedback').textContent = feedback;
+
+  document.getElementById('retry-btn').onclick = () => startQuiz(currentLevel);
+}
+
+function goToMenu(){
+  clearInterval(timerInterval);
+  quizScreen.classList.add('hidden');
+  resultScreen.classList.add('hidden');
+  menuScreen.classList.remove('hidden');
+}
+
+/* --- Confetti --- */
+const canvas = document.getElementById('confetti-canvas');
+const ctx = canvas.getContext('2d');
+function resizeCanvas(){
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+let confettiPieces = [];
+let confettiAnimating = false;
+const confettiColors = ['#155048','#d1a12e','#3f7d72','#e8cf8a','#0d3a34'];
+
+function fireConfetti(){
+  const count = 60;
+  for(let i=0;i<count;i++){
+    confettiPieces.push({
+      x: Math.random() * canvas.width,
+      y: -20 - Math.random()*100,
+      size: 4 + Math.random()*5,
+      speedY: 2 + Math.random()*3,
+      speedX: (Math.random()-0.5)*2,
+      rotation: Math.random()*360,
+      rotSpeed: (Math.random()-0.5)*10,
+      color: confettiColors[Math.floor(Math.random()*confettiColors.length)],
+      life: 0
+    });
+  }
+  if(!confettiAnimating){
+    confettiAnimating = true;
+    requestAnimationFrame(animateConfetti);
+  }
+}
+
+function animateConfetti(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  confettiPieces.forEach(p => {
+    p.x += p.speedX;
+    p.y += p.speedY;
+    p.rotation += p.rotSpeed;
+    p.life++;
+    ctx.save();
+    ctx.translate(p.x, p.y);
+    ctx.rotate(p.rotation * Math.PI / 180);
+    ctx.fillStyle = p.color;
+    ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size*0.5);
+    ctx.restore();
+  });
+  confettiPieces = confettiPieces.filter(p => p.y < canvas.height + 30 && p.life < 400);
+  if(confettiPieces.length > 0){
+    requestAnimationFrame(animateConfetti);
+  } else {
+    confettiAnimating = false;
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+  }
+}
+</script>
+</body>
+</html>
